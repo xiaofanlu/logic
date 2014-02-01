@@ -1,0 +1,314 @@
+\documentclass[12pt]{article}
+\pagestyle{empty}
+
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{times}
+\usepackage{color}
+\usepackage{listings}
+\usepackage{enumerate}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{ascii}
+\usepackage[T1]{fontenc}
+\usepackage{datetime}
+\usepackage[top=1.5in, bottom=1.5in, left=1in, right=1in]{geometry}
+
+\providecommand{\e}[1]{\ensuremath{\times 10^{#1}}}
+
+\pagestyle{fancy} 
+\renewcommand{\headrulewidth}{0pt}
+\shortdate
+\fancyhead[LE, RO]{\textit{\date{\currenttime} \today}}
+\fancyhead[LO]{\textit {Xiaofan Lu}}
+
+
+
+\titleformat{\section}
+  {\normalfont\large}
+  {\thesection}{1em}{}
+  
+\begin{document}
+\title{CS388L Homework Solution}
+\author{Xiaofan Lu, xl4326}
+\date{\vspace{-3ex}}
+\maketitle
+
+\section{Propositional Formulas: Syntax  \colorbox{green}{$~$ }}
+\begin{enumerate}
+\item[\textbf{Problem 1}] A formula cannot contain two binary connectives next to each other. True or false?\\
+Prove by \textit{structural induction}. Define property $P$ as above. 
+\begin{itemize}
+\item There is no connectives in atoms. Thus every atom has property $P$. 
+\item There is no connectives in $\top$ and $\bot$. Thus $\top$ and $\bot$ has property $P$. 
+\item $\neg$ is an unitary connective. Thus if a formula $F$ has property $P$. Then so does $\neg F$. 
+\item A formula neither stars nor ends with a binary connective. Thus if formulas F and G don't contain two binary connective next to each other. So does $(F \odot G)$. 
+\end{itemize}
+\noindent Then we can conclude that property $P$ holds for all formulas. 
+
+\item[\textbf{Problem 2}] If a formula contains more than one character then its last character is not an atom. True or false?     (False. Consider $\neg p$)  \\
+How about the first character? \\
+True. Prove by \textit{structural induction}. Define property $P$ as above. 
+\begin{itemize}
+\item An atom has only one character. 
+\item $\top$ and $\bot$ has only one character as well. 
+\item $\neg F$ does not start with an atom. 
+\item $(F \odot G)$ does not start with an atom as well.   
+\end{itemize}
+\noindent Then we can conclude that property $P$ holds for all formulas. 
+\end{enumerate}
+
+
+
+
+\section{Propositional Formulas: Semantics \colorbox{green}{$~$ }}
+\begin{enumerate}
+\item[\textbf{Problem 3}] For any formulas $F_1, \ldots, F_n~(n \geq 1)$ and any interpretation $I$, 
+\begin{eqnarray*}
+ (F_1 \wedge \cdots \wedge F_n)^I &= t~~ \text{iff} ~~ F_1^I = \cdots = F_n^I &= t  \\
+ (F_1 \vee \cdots \vee F_n)^I &= f~~ \text{iff} ~~ F_1^I = \cdots = F_n^I &= f 
+\end{eqnarray*}
+
+\noindent
+Define: $G_n = F_1 \wedge \cdots \wedge F_n$. \\
+$\bullet$ When $n = 1$, $G_1^I = F_1^I$, thus $G_1^I = t \iff F_1^I = t$  \\
+$\bullet$ Let $k \in N$ and suppose $G_k^I = t \iff F_1^I = \cdots = F_k^I = t$, then
+\begin{equation*}
+    G_{k+1}^I = \left(G_k \wedge F_{k+1} \right)^I = \wedge \left(G_k^I, F_{k+1}^I \right)
+\end{equation*}
+\vspace{-30pt}
+\begin{eqnarray*}
+    G_{k+1}^I = t &\iff &G_k^I = t \And F_{k+1}^I = t  \\
+    G_{k+1}^I = t &\iff & F_1^I = \cdots = F_k^I = F_{k+1}^I = t
+\end{eqnarray*}
+\hspace{10pt}Thus, the induction hypothesis holds true for $n = k+1$. \\
+$\bullet$ By the principle of induction, $G_n^I = t \iff F_1^I = \cdots = F_n^I = t$, which is \\
+\begin{equation*}
+(F_1 \wedge \cdots \wedge F_n)^I = t~~ \text{iff} ~~ F_1^I = \cdots = F_n^I = t
+\end{equation*}
+
+\item[\textbf{Problem 4}] For any interpretation $I$, there exists a formula $F$ such that $I$ is the only interpretation satisfying $F$. 
+
+For atom $p_i : 1 \leq i \leq n$, define 
+$F_i=\left\{
+    \begin{array}{c l}      
+    p_i & p_i^I = t\\
+    \neg p_i & p_i^I = f
+\end{array}\right.$
+Thus, $F = F_1 \wedge \cdots \wedge F_n$. \\
+From \textbf{problem 3}, we know that $I$ satisfies $F$. \\
+For any other interpretation $I'$. There must $\exists k \in N$ that $p_k^{I} = \neg p_k^{I'}$. Thus, $F_k^{I'} = f$, clearly, $I'$ doesn't satisfy $F$. 
+
+
+\item[\textbf{Problem 5}] For any set $S$ of interpretations there exists a formula $F$ such that for all interpretation $I$, $I \vdash F ~~\text{iff}~~ I \in S$. \\
+Student Solution: \\
+If set S is empty, $F = \bot$. Else, let $S = \{ I_i :1 \leq i \leq n \}$ be a set of interpretation. For each $I_i$, let $F_i$, s.t. $I_i$ is the only interpretation satisfying $F_i$ (by Problem 4).  \\
+If define $F = (F_1 \vee \cdots \vee F_n)$, since $F_i^{I_i} = t, F^{I_i} = t$. Thus, $I \in S \Rightarrow I \vdash F$. \\
+Now, suppose $I' \notin S$, by construction, $\forall i, F_i^{I'} = f$. Thus,  $I \notin S \Rightarrow I \not\vdash F$. \\
+Thus, $I \in S \iff I \vdash F$.\\
+
+Proffessor Solution: \\
+$I \vdash F$ \\
+$~\quad \iff$  \{Construction of F \}\\
+    $~\qquad I \vdash F_1 \vee \cdots \vee F_n $  \\
+$~\qquad \iff$   \{by Problem 3\}  \\ 
+    $~\qquad \quad$for some $i$, $I \vdash F_i$  \\
+ $~\qquad \quad \iff$   \{by Problem 4, choice of $F_i$\}  \\ 
+    $~\qquad \qquad$for some $i$, $I = I_i$  \\
+ $~\qquad \qquad \iff$   \{set notation \}  \\ 
+ $~\qquad \qquad \quad I \in \{  I_i :1 \leq i \leq n\}$   \\ 
+
+\end{enumerate}
+
+\section{Tautologies and Equivalence \colorbox{green}{$~$ }}
+A propositional formula F is a \textit{tautology} if every interpretation satisfies $F$.
+
+\begin{enumerate}
+\item[\textbf{Problem 6}] Determine which of the formulas 
+\begin{gather*}
+(p \rightarrow q) \vee  (q \rightarrow p) \\
+((p \rightarrow q) \rightarrow  p) \rightarrow p \\
+((p \rightarrow q) \rightarrow r) \rightarrow  ((p \rightarrow q) \rightarrow (p \rightarrow r ))  
+\end{gather*}
+    
+\begin{table}[H]
+\begin{center}
+    \begin{tabular}{c c c c}
+    \hline
+    p & q & 1 & 2 \\ \hline
+    f & f & t   & t   \\
+    f & t & t   & t   \\
+    t & f & t   & t   \\
+    t & t & t   & t   \\ \hline
+    \end{tabular}
+\end{center}
+\end{table}
+
+\end{enumerate}
+A formula $F$ is equivalent to a formula $G$ (symbolically, $F \sim G$) if, for every interpretation $I$, $F^I = G^I$. 
+
+\begin{enumerate}
+\item[\textbf{Problem 7}] (a) We know that conjunction and disjunction are associative: 
+\begin{gather*}
+(F \wedge G) \wedge H \sim F \wedge (G \wedge H) \\
+(F \vee G) \vee H \sim F \vee (G \vee H)
+\end{gather*}
+Determine whether equivalence has a similar property: 
+\begin{gather*}
+ (F \leftrightarrow G) \leftrightarrow H \sim F \leftrightarrow (G \leftrightarrow H)
+\end{gather*}
+    \begin{gather*}
+ F \rightarrow (G \wedge H) \sim (F \wedge G) \rightarrow (F \wedge H)
+\end{gather*}
+Find a similar transformation for $(F \vee G) \rightarrow H$. 
+
+\begin{eqnarray*} 
+(F \vee G) \rightarrow H 
+                         \sim & \neg H \rightarrow (\neg F \wedge \neg G) \\
+                         \sim & (\neg H \wedge \neg F) \rightarrow (\neg H \wedge \neg G) \\  
+                         \sim & (H \vee G) \rightarrow (H \vee F)
+\end{eqnarray*}
+
+
+\item[\textbf{Problem 8}] We know that conjunction distributes over disjunction and that disjunction distributes over conjunction: 
+\begin{gather*}
+ F \wedge (G \vee H) \sim (F \wedge G) \vee (F \wedge H) \\
+ F \vee (G \wedge H) \sim (F \vee G) \wedge (F \vee H)
+\end{gather*}
+Do these connectives distribute over equivalence? \\
+
+For $\wedge$ No. \\
+For $\vee$ Yes. $ F \vee (G \leftrightarrow H) \sim (F \vee G) \leftrightarrow (F \vee H)$ 
+
+\item[\textbf{Problem 9}] De Morgan's laws
+\begin{gather*}
+ \neg ( F \wedge G) \sim \neg F \vee \neg G \\
+ \neg ( F \vee G) \sim \neg F \wedge \neg G
+\end{gather*}
+show how to transform a formula of the form $\neg (F \odot G)$ when $\odot$ is $\wedge$ or $\vee$. Find similar transformations for the cases when $\odot$ is $\rightarrow$ or $\leftrightarrow$. (use truth table)
+ \begin{gather*}
+     \neg (F \rightarrow G) \sim F \wedge \neg G   \\
+     \neg (F \leftrightarrow G) \sim \left\{
+        \begin{array}{c}      
+        F \leftrightarrow \neg G\\
+        \neg F \leftrightarrow G
+        \end{array}\right.
+ \end{gather*}
+
+\item[\textbf{Problem 10}] To simplify a formula means to find an equivalent formula that is shorter. Simplify the formulas: 
+\begin{gather*} 
+ F \vee ( F \wedge G) \sim F \\
+ F \wedge (F \vee G) \sim F \\
+ F \vee (\neg F \wedge G) \sim F \vee G
+\end{gather*}
+ \end{enumerate}
+ 
+ \newpage
+\section{Adequate Sets of Connectives \colorbox{yellow}{$~$ }}
+\begin{enumerate}
+\item[\textbf{Problem 11}] For any formula, there exists an equivalent formula that contains no connectives other than (i) $\wedge$ and $\neg$; (ii) $\vee$ and $\neg$.  (structural induction)
+    \begin{enumerate} [(i)]
+        \item $\wedge$ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \vee \neg p \sim \neg (p \wedge \neg p)$; $\bot \sim p \wedge \neg p$. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\wedge$ \text{and} $\neg$.  Clearly, $\neg F \sim \neg F'$.  So if a formula $F$ has property P then so does $\neg F$. 
+                \item $F \wedge G \sim F' \wedge G'$; \\
+                 $F \vee G \sim F' \vee G' \sim \neg (\neg F' \wedge \neg G')$; (\textit{De Morgan's Law}) \\
+                 $ F \rightarrow G \sim F' \rightarrow G' \sim \neg (F' \wedge \neg G')$;\\
+                  Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.   
+       
+          \item $\vee$ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \vee \neg p$; $\bot \sim \neg (p \vee \neg p) $. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\wedge$ \text{and} $\neg$.  Clearly, $\neg F \sim \neg F'$.  So if a formula $F$ has property P then so does $\neg F$.
+                \item $F \wedge G \sim F' \wedge G' \sim \neg (\neg F' \vee \neg G') $; (\textit{De Morgan's Law}) \\
+                 $F \vee G \sim F' \vee G'$;  \\
+                 $ F \rightarrow G \sim F' \rightarrow G' \sim \neg (F' \wedge \neg G') \sim \neg F' \vee G'$ \\
+                 Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.    
+    \end{enumerate}
+    
+\item[\textbf{Problem 12}] For any formula, there exists an equivalent formula that contains no connectives other than (i) $\rightarrow $ and $\neg$; (ii) $\rightarrow $ and $\bot$.  (structural induction)
+    \begin{enumerate} [(i)]
+        \item $\rightarrow $ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \rightarrow p$; $\bot \sim \neg(p \rightarrow p)$. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\rightarrow $ \text{and} $\neg$. Clearly, $\neg F \sim \neg F'$.  So if a formula $F$ has property P then so does $\neg F$. 
+                \item $F \wedge G \sim F' \wedge G' \sim F' \wedge \neg (\neg G') \sim \neg ( F' \rightarrow \neg G') $; \\
+                 $F \vee G \sim F' \vee G' \sim \neg (\neg F' \wedge \neg G') \sim \neg 
+                 F' \rightarrow G' $ ;  \\
+                 $F \rightarrow G \sim F' \rightarrow G'$;\\
+                  Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.   
+       
+          \item $\rightarrow $ and $\bot$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \rightarrow p \: (\bot \rightarrow p) $; $\bot$ is trivial. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\rightarrow $ \text{and} $\bot$.  Clearly, $\neg F \sim \neg F' \sim F' \rightarrow \bot $.  So if a formula $F$ has property P then so does $\neg F$.
+                \item $F \wedge G \sim F' \wedge G' \sim \neg ( F' \rightarrow \neg G') \sim [F' \rightarrow (G' \rightarrow \bot)] \rightarrow \bot ] $; \\
+                 $F \vee G \sim F' \vee G' \sim \neg F' \rightarrow G' \sim (F' \rightarrow \bot) \rightarrow G'$;  \\
+                 $ F \rightarrow G \sim F' \rightarrow G' $\\
+                 Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.    
+    \end{enumerate}
+
+\item[\textbf{Problem 13}] Any propositional formula equivalent to $\neg p$ contains $\neg$ or $\bot$.   \\   
+                     \colorbox{yellow}{[TODO]}
+\end{enumerate}
+
+
+\newpage
+\section{Normal Forms \colorbox{yellow}{Note 3, page 5}}
+\begin{enumerate}
+\item[\textbf{Problem 14}] Any formula is equivalent to a formula in negation normal form.  \colorbox{yellow}{[TODO]}
+
+\item[\textbf{Problem 15}] Any formula is equivalent to a formula in disjunctive normal form.  
+\colorbox{yellow}{[TODO]}
+
+\item[\textbf{Problem 16}] Let $F$ be a formula in disjunctive normal form. Show that $\neg F$ is equivalent to a formula in conjunctive normal form. 
+
+\item[\textbf{Problem 17}] Any formula is equivalent to a formula in conjunctive normal form.  
+\colorbox{yellow}{[TODO]}
+
+
+\end{enumerate}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
