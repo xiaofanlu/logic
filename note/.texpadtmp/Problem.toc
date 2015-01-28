@@ -1,0 +1,28 @@
+\contentsline {section}{\numberline {1}Part 1}{1}{section.1}
+\contentsline {subsection}{\numberline {1.1}Propositional Formulas: Syntax}{1}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Propositional Formulas: Semantics}{3}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Tautologies and Equivalence}{4}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Quiz 1}{6}{subsection.1.4}
+\contentsline {section}{\numberline {2}Part 2}{7}{section.2}
+\contentsline {subsection}{\numberline {2.1}Adequate Sets of Connectives}{7}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Normal Forms}{9}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Satisfiability and Entailment}{10}{subsection.2.3}
+\contentsline {subsection}{\numberline {2.4}Clausification}{11}{subsection.2.4}
+\contentsline {subsection}{\numberline {2.5}Quiz 3}{12}{subsection.2.5}
+\contentsline {section}{\numberline {3}Part 3}{13}{section.3}
+\contentsline {subsection}{\numberline {3.1}Positive Programs}{13}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Minimal Models}{13}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Quiz 4}{16}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Application: Graph Coloring}{17}{subsection.3.4}
+\contentsline {section}{\numberline {4}Part 4}{18}{section.4}
+\contentsline {subsection}{\numberline {4.1}Logic Programs and Stable Models}{18}{subsection.4.1}
+\contentsline {section}{\numberline {5}Part 5}{23}{section.5}
+\contentsline {subsection}{\numberline {5.1}Natural Deduction}{23}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Soundness and Completeness of Natural Deduction}{31}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Quiz 5}{37}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Quiz 6}{37}{subsection.5.4}
+\contentsline {section}{\numberline {6}Part 8}{39}{section.6}
+\contentsline {subsection}{\numberline {6.1}Predicate Formulas: Syntax}{39}{subsection.6.1}
+\contentsline {subsection}{\numberline {6.2}Predicate Formulas: Semantics}{41}{subsection.6.2}
+\contentsline {subsection}{\numberline {6.3}Logical Validity and Entailment}{43}{subsection.6.3}
+\contentsline {subsection}{\numberline {6.4}Introduction and Elimination Rules for Quantifiers}{47}{subsection.6.4}

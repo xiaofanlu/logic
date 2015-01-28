@@ -1,0 +1,244 @@
+\section{Part 2}
+\subsection{Adequate Sets of Connectives}
+\begin{enumerate}
+\item[\textbf{Problem 11}] For any formula, there exists an equivalent formula that contains no connectives other than (i) $\wedge$ and $\neg$; (ii) $\vee$ and $\neg$.  (structural induction)
+    \begin{enumerate} [(i)]
+        \item $\wedge$ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \vee \neg p \sim \neg (p \wedge \neg p)$; $\bot \sim p \wedge \neg p$. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\wedge$ \text{and} $\neg$.  Clearly, $\neg F \sim \neg F'$.  So $\neg F$ has property P. 
+                \item $F \wedge G \sim F' \wedge G'$; \\
+                 $F \vee G \sim F' \vee G' \sim \neg (\neg F' \wedge \neg G')$; (\textit{De Morgan's Law}) \\
+                 $ F \rightarrow G \sim F' \rightarrow G' \sim \neg (F' \wedge \neg G')$;\\
+                  Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.   
+       
+          \item $\vee$ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \vee \neg p$; $\bot \sim \neg (p \vee \neg p) $. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\wedge$ \text{and} $\neg$.  Clearly, $\neg F \sim \neg F'$.  So $\neg F$ has property P. 
+                \item $F \wedge G \sim F' \wedge G' \sim \neg (\neg F' \vee \neg G') $; (\textit{De Morgan's Law}) \\
+                 $F \vee G \sim F' \vee G'$;  \\
+                 $ F \rightarrow G \sim F' \rightarrow G' \sim \neg (F' \wedge \neg G') \sim \neg F' \vee G'$ \\
+                 Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.    
+    \end{enumerate}
+    
+\item[\textbf{Problem 12}] For any formula, there exists an equivalent formula that contains no connectives other than (i) $\rightarrow $ and $\neg$; (ii) $\rightarrow $ and $\bot$.  (structural induction)
+    \begin{enumerate} [(i)]
+        \item $\rightarrow $ and $\neg$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \rightarrow p$; $\bot \sim \neg(p \rightarrow p)$. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\rightarrow $ \text{and} $\neg$. Clearly, $\neg F \sim \neg F'$.  So $\neg F$ has property P. 
+                \item $F \wedge G \sim F' \wedge G' \sim F' \wedge \neg (\neg G') \sim \neg ( F' \rightarrow \neg G') $; \\
+                 $F \vee G \sim F' \vee G' \sim \neg (\neg F' \wedge \neg G') \sim \neg 
+                 F' \rightarrow G' $ ;  \\
+                 $F \rightarrow G \sim F' \rightarrow G'$;\\
+                  Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.   
+       
+          \item $\rightarrow $ and $\bot$ 
+            \begin{itemize}
+                \item There is no connective in atoms. Thus every atom has property $P$. 
+                \item $\top \sim p \rightarrow p \: (\bot \rightarrow p) $; $\bot$ is trivial. Thus $\top$ and $\bot$ has property $P$. 
+                \item By induction hypothesis, there exist $F' \sim F$, that contains no connective other than $\rightarrow $ \text{and} $\bot$.  Clearly, $\neg F \sim \neg F' \sim F' \rightarrow \bot $.  So $\neg F$ has property P. 
+                \item $F \wedge G \sim F' \wedge G' \sim \neg ( F' \rightarrow \neg G') \sim [F' \rightarrow (G' \rightarrow \bot)] \rightarrow \bot$; \\
+                 $F \vee G \sim F' \vee G' \sim \neg F' \rightarrow G' \sim (F' \rightarrow \bot) \rightarrow G'$;  \\
+                 $ F \rightarrow G \sim F' \rightarrow G' $\\
+                 Thus, for any binary connective $\odot$, if formulas $F$ and $G$ has property $P$, then so does $(F \odot G)$. 
+            \end{itemize}
+       Then we can conclude that property $P$ holds for all formulas.    
+    \end{enumerate}
+
+\item[\textbf{Problem 13}] Any propositional formula equivalent to $\neg p$ contains $\neg$ or $\bot$.  \\
+Lemma: Any propositional formula containing neither $\neg$ nor $\bot$ under the interpretation that all the atoms are evaluated true will be interpreted as true.
+\begin{proof} Proof by structural induction. 
+\begin{enumerate}[i]
+	\item Atom. Trivially.
+	\item $\top$. $\top^I = t$.
+	\item  $F\odot G$. Suppose	$F^I = t$, $G^I = t$, 
+		\begin{itemize}
+			\item $(F \wedge G)^I = (F^I \wedge G^I) = t$; \\
+			\item $(F \vee G)^I = (F^I \vee G^I) = t$; \\
+			\item $(F \rightarrow G)^I = (F^I \rightarrow G^I) = t$. 
+		\end{itemize}
+\end{enumerate}
+By the structural induction, the lemma follows.\\
+However, any propositional formula equivalent to $ \neg p$ can not be interpreted as true under the interpretation that all the atoms are evaluated true.\\
+Thus, Any propositional formula equivalent to $\neg p$ contains $\neg$ or $\bot$.
+\end{proof}
+
+\end{enumerate}
+
+\subsection{Normal Forms} %Note 3, page 5}
+A \textit{literal} is an atom or the negation of an atom. A propositional formula is said to be \textit{negation normal form} if 
+\begin{itemize}
+    \item it contains no connectives other than conjunction, disjunction, and negation, and 
+    \item every negation in it is part of a literal. 
+\end{itemize}
+
+\begin{enumerate}
+\item[\textbf{Problem 14}] Any formula is equivalent to a formula in negation normal form.  
+\begin{proof}
+Use structure induction. 
+\begin{itemize}
+\item $F$ is atom $a$, $\neg F = \neg a$, both $F$ and $\neg F$ are in NNF.  
+\item if $F$ is $\bot$, $ F \sim p \wedge \neg p$, $\neg F \sim p \vee \neg p$. Similar for the case where $F = \top$. Both $F$ and $\neg F$ are in NNF. 
+\item Let $F$ and $\neg F$ have NNF. The negation of them are still NNF. 
+\item Suppose $F, \neg F, G, \neg G$ have NNF, this is to say, we have $F \sim F', \neg F \sim F'', G \sim G', \neg G \sim G''$, where $F', F'', G', G''$ are in NNF. 
+    \begin{itemize}
+        \item $F \wedge G \sim F' \wedge G'$,  \quad $\neg (F \wedge G) \sim \neg F \vee \neg G \sim F'' \vee G''$;
+        \item $F \vee G \sim F' \vee G'$,  \quad $\neg (F \vee G) \sim \neg F \wedge \neg G \sim F'' \wedge G''$;
+        \item $F \rightarrow G \sim \neg F \vee G \sim F'' \vee G'$ ; \quad $\neg F \rightarrow \neg G \sim F \vee \neg G \sim F' \vee G''$. 
+        
+    \end{itemize}
+\end{itemize}
+\end{proof}
+\end{enumerate}
+
+\noindent
+A $simple~ conjunction$ is a formula of the form $L_1 \wedge \cdots \wedge L_n (n \geq 1)$, where $L_1, \ldots, L_n$ are literals. A formula is in \textit{disjunctive normal form (DNF)} if it has the form $C_1 \vee \cdots \vee C_m (m \geq 1)$, where $C_1, \ldots C_m$ are simple conjunctions. 
+
+\begin{enumerate}
+\item[\textbf{Problem 15}] Any formula is equivalent to a formula in disjunctive normal form. 
+\begin{proof}
+For any formula $F$, let all the interpretations that satisfy $F$ are $I_1, I_2, \ldots, I_n$, and define set $S = \{I_1, I_2, \ldots, I_n\}$. \\
+By Problem 5, there $\exists$ a formula $F'$ such that for all interpretations $I$, $I \models F'$ iff $I \in S$, where $F' = F_1' \vee \ldots \vee F_n'$, where $F'_i$ is the formula that $I_i$ is the only interpretation satisfying it. From problem 4, we know that $F'_i$ is a simple conjunction of literals. 
+\begin{itemize}
+	\item if $I \in S$ (i.e. $I \models F$), then $I \models F'$;
+	\item if $I \notin S$ (i.e. $I \nvDash F$), then $I \nvDash F'$.
+\end{itemize}
+
+For all interpretations $I$, $F^I = F'^{I}$, so $F$ is equivalent to $F'$. Since $F'$ is in the form of DNF, F is equivalent to a formula in DNF.
+\end{proof}
+
+\end{enumerate}
+
+\noindent
+A $simple~ disjunction$ is a formula of the form $L_1 \vee \cdots \vee L_n (n \geq 1)$, where $L_1, \ldots, L_n$ are literals. Simple disjunctions are also called \textit{clauses}. 
+\noindent
+A formula is in \textit{conjunctive normal form (CNF)} if it has the form $D_1 \wedge \cdots \wedge D_m (m \geq 1)$, where $D_1, \ldots D_m$ are simple disjunctions. 
+
+\begin{enumerate}
+
+\item[\textbf{Problem 16}] Let $F$ be a formula in disjunctive normal form. Show that $\neg F$ is equivalent to a formula in conjunctive normal form. 
+\begin{proof}
+Since $F$ is in DNF, $F = C_1 \vee \cdots \vee C_m ~(m \geq 1)$, where $C_i = L_1 \wedge \cdots \wedge L_n$. \\
+We have $\neg F \sim \neg C_1 \wedge \cdots \wedge \neg C_m ~(m \geq 1)$, where $\neg C_i \sim \overline{L_1} \vee \cdots \vee \overline{L_n}$. \\
+Define $D_i = \neg C_i$, thus, $\neg F$ has the form $D_1 \wedge \cdots \wedge D_m (m \geq 1)$, where $D_1, \ldots, D_m$ are simple disjunctions. \\
+Thus, $\neg F$ is equivalent to a formula in conjunctive normal form. 
+\end{proof}
+
+\item[\textbf{Problem 17}] Any formula is equivalent to a formula in conjunctive normal form.   \\
+$\forall F $ \\
+$~\quad \sim \qquad$  \{$\forall I, F^I = \neg (\neg (F^I)) = (\neg \neg F)^I$ \}\\
+    $~\qquad \neg \neg F$  \\
+$~\qquad \sim \qquad$   \{by Problem 15, $\neg F \sim G $ in DNF\}  \\ 
+    $~\qquad \quad \neg G$  \\
+ $~\qquad \quad \sim$   \{by Problem 16, $\neg G \sim H$ in CNF\}  \\ 
+    $~\qquad \qquad H$ 
+\end{enumerate}
+
+\subsection{Satisfiability and Entailment}
+A \textit{set} $\Gamma$ is \textit{satisfiable} if there exists an interpretation that satisfies all formulas in $\Gamma$, and \textit{unsatisfiable} otherwise. 
+
+\begin{enumerate}
+\item[\textbf{Problem 18}] A set $\Gamma$ of literals is satisfiable iff there is no atom $A$ for which both $A$ and $\neg A$ belong to $\Gamma$. 
+\begin{itemize}
+\item[$\rightarrow$] If a set $\Gamma$ of literals is satisfiable, then there $\exists$ an interpretation $I$ that satisfies all formulas in $\Gamma$. Clearly, for any atom $A$, $A^I$ and $(\neg A)^I$ can not be satisfied at the same time. Thus, there is no atom $A$ for which both $A$ and $\neg A$ belong to $\Gamma$.
+\item[$\leftarrow$] If there is no atom $A$ for which both $A$ and $\neg A$ belong to $\Gamma$. Thus, we can find interpretation $I$ for any atom $A$ based on the following rule:
+\begin{gather*}
+A^I =  \left\{
+        \begin{array}{c}      
+        t \qquad \text{if} \: A \in \Gamma \\
+        f \qquad \text{if} \; \neg A \in \Gamma \\
+        f \qquad \text{otherwise}
+        \end{array}\right.
+\end{gather*}
+\end{itemize}
+Thus for any literal $L \in \Gamma$, we have $I(L) = t$. Clearly, this set $\Gamma$ of literal is satisfiable. 
+
+\end{enumerate}
+
+
+
+\noindent A set $\Gamma$ of formulas \textit{entails} a formula $F$ (symbolically, $\Gamma \models F$), if every interpretation that satisfies all formulas in $\Gamma$ satisfies $F$ also. 
+
+\begin{enumerate}
+\item[\textbf{Problem 19}] For any formulas $F_1, \ldots, F_n, G$, the following conditions are equivalent:
+\begin{enumerate}[(1)]
+\item $F_1, \ldots, F_n \models G$, 
+\item $(F_1 \wedge \cdots \wedge F_n) \rightarrow G$ is tautology, 
+\item the set $\{F_1, \ldots, F_n, \neg G \}$ is unsatisfiable. 
+\end{enumerate}
+\begin{enumerate}[(1)]
+\item By definition, $\forall I s.t. F_1^I = t, \ldots, F_n^I = t$, we have $G^I = t$. 
+\item $(F_1 \wedge \cdots \wedge F_n) \rightarrow G$ is tautology means that $\forall I s.t. (F_1 \wedge \cdots \wedge F_n)^I = t$, we have $G^I = t$. From problem 3, we know that $(F_1 \wedge \cdots \wedge F_n)^I = t \sim F_1^I = t, \ldots, F_n^I = t$. This is (1). Thus we have $(1) \Longleftrightarrow (2)$. 
+\item the set $\{F_1, \ldots, F_n, \neg G \}$ is unsatisfiable means that there $\not \exists I s.t. F_1^I = t, \ldots, F_n^I = t, \neg G^I = t$. This is to say, $\forall I s.t. F_1^I = t, \ldots, F_n^I = t$, we have $\neg G^I = f$. Thus, $G^I = t$. This turn out to be (1). Thus we have $(1) \Longleftrightarrow (3)$. 
+\end{enumerate}
+Thus, we have $ (1) \Longleftrightarrow (2) \Longleftrightarrow (3)$. 
+\end{enumerate}
+
+\subsection{Clausification}
+To \textit{clausify} a formula $F$ means to find a formula 
+$F'$ that may contain some new atoms, not occurring in $F$, such that
+\begin{itemize}
+\item $F'$ is in conjunctive normal form,
+\item any interpretation satisfying $F'$ satisfies $F$, and 
+\item any interpretation satisfying $F$ can be extended to the new atoms so that it will satisfy $F'$. 
+\end{itemize}
+Here is an algorithm for clausifying a propositional formula: \\
+\begin{algorithm}[H]
+ \Begin{
+     $\Gamma \leftarrow \emptyset$ \\
+     \While{F is not CNF}{
+          $A \leftarrow$ a new atom \\
+          $G \leftarrow$ a minimal non-literal subformula of F \\
+          $F \leftarrow$ the result of replacing G in F by A \\
+          $\Delta \leftarrow$ the set of clauses of the CNF of $A
+               \leftrightarrow  G$ \\
+          $\Gamma \leftarrow \Gamma \cup \Delta$
+      }
+      \Return the conjunction of F with clauses $\Gamma$
+}
+\end{algorithm}
+
+\begin{enumerate}
+\item[\textbf{Problem 20}] (i) Apply this algorithm to the formula $p \vee \neg (q \rightarrow r)$. (ii) Determine whether this formula is equivalent to the result of its clausification. \\
+(ii). The formula is not equivalent to the result of its clausification for the latter has new atom whose interpretation is not defined in the interpretation for the original formula. 
+\end{enumerate}
+
+
+\subsection{Quiz 3}
+\noindent
+The set of \textit{canonical} propositional formulas is defined recursively:
+\begin{itemize}
+\item every literal is a canonical formula;
+\item if formulas $F$ and $G$ are canonical then the formulas $F \vee G$ and $F \rightarrow G$ are canonical also. 
+\end{itemize}
+Every formula is equivalent to a canonical formula. True or false?\\
+
+\noindent
+False, $\bot$ is not equivalent to a canonical formula. 
+\begin{proof}
+Use structural induction over the definition of canonical formula. 
+\begin{itemize}
+\item every literal can not be equivalent to $\bot$;
+\item suppose formulas $F$ and $G$ are not equivalent to $\bot$. There $\exists$ an interpretation $I$, that $G^I = t$. \\
+Thus, 
+\begin{eqnarray*}
+(F \vee G)^I =& \vee(F^I, G^I) =& t \\
+(F \rightarrow G)^I =& \rightarrow (F^I, G^I) =& t 
+\end{eqnarray*}
+Clearly, neither $(F \vee G)$ nor $(F \rightarrow G)$ is equivalent to $\bot$. 
+\end{itemize}
+Then we can conclude that no canonical formula is equivalent to $\bot$. 
+\end{proof}
+
+\newpage

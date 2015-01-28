@@ -1,0 +1,883 @@
+\section{Part 5}
+\subsection{Natural Deduction}
+In this part of the course we consider, for simplicity, propositional formulas that do not contain the connective $\top$. \\
+A \textit{sequent} is an expression of the form
+\begin{equation}
+\label{5_seq_1}
+\Gamma \Rightarrow F
+\end{equation}
+("$F$ under assumption $\Gamma$"), where $\Gamma$ is a finite set of formulas. If $\Gamma$ is written as $\{ G_1, \ldots, G_n \}$, we will drop the braces and write \eqref{5_seq_1} as 
+\begin{equation}
+\label{5_seq_2}
+ G_1, \ldots, G_n  \Rightarrow F
+\end{equation}
+Intuitively, a sequent \eqref{5_seq_2} has the same meanning as the formula 
+\begin{equation}
+\label{5_seq_3}
+(G_1 \wedge \ldots \wedge G_n) \rightarrow F
+\end{equation}
+(as the formula $F$ if $n = 0$). 
+
+We define below which sequents are considered \textit{axioms} and provide a list of \textit{inference rules}. A \textit{proof} is a list of sequents $S_1, \ldots, S_n$ such that each $S_i$ is either an axiom or can be derived from some of the sequents $S_1, \ldots, S_{i-1}$ by one of the inference rules.
+
+\noindent
+\textbf{Axioms} are sequents of the forms
+\begin{equation*}
+F \Rightarrow F
+\end{equation*}
+and 
+\begin{equation*}
+\Rightarrow F \vee \neg F
+\end{equation*}
+ ("the law of the excluded middle")
+ 
+\noindent
+\textbf{Inference Rules} In the list below, $F, G, H$ are formulas, and $\Gamma, \Delta, \Sigma$ are finite sets of formulas. Most inference rules are classifed into \textit{introduction rules} (the left column) and \textit{elimination rules} (the right column); two exceptions are the \textit{contradiction rule (C)} and the \textit{weakening rule (W)}. 
+
+
+
+\begin{align*}
+% left-1
+& (\wedge I) \frac{ \Gamma \Rightarrow F \quad \Delta \Rightarrow G}{\Gamma, \Delta \Rightarrow F \wedge G} \qquad
+% right-1  
+& &(\wedge E) \frac{ \Gamma \Rightarrow F \wedge G}{\Gamma \Rightarrow F}
+ \quad  \frac{ \Gamma \Rightarrow F \wedge G}{\Gamma \Rightarrow  G} \\
+% left-2
+&(\vee I) \frac{ \Gamma \Rightarrow F}{ \Gamma \Rightarrow F \vee G} \quad
+\frac{ \Gamma \Rightarrow G}{ \Gamma \Rightarrow F \vee G} \qquad
+% right-2
+& &(\vee E) \frac{ \Gamma \Rightarrow F \vee G \quad \Delta, F \Rightarrow H \quad \Sigma, G \Rightarrow H} {  \Gamma, \Delta, \Sigma \Rightarrow H} \\
+% left-3
+& (\rightarrow I) \frac{\Gamma, F \Rightarrow G}{\Gamma \Rightarrow F \rightarrow G} \qquad
+% right-3
+& &(\rightarrow E) \frac{\Gamma \Rightarrow F \quad \Delta \Rightarrow F \rightarrow G}{\Gamma, \Delta \Rightarrow G}  \\
+% left-4
+& (\neg I) \frac{\Gamma, F \Rightarrow \bot}{\Gamma \Rightarrow \neg F} \qquad
+% right-4
+& &(\neg E) \frac{\Gamma \Rightarrow F \quad \Delta \Rightarrow \neg F}{\Gamma, \Delta \Rightarrow \bot}  
+\end{align*}
+
+\begin{align*}
+&(C)~~\frac{\Gamma \Rightarrow \bot}{\Gamma \Rightarrow F} \\
+& ~~ \\
+&(W)~~\frac{\Gamma \Rightarrow H}{\Gamma, \Delta \Rightarrow H}
+\end{align*}
+
+To prove a sequent $S$ means to find a proof with the last sequent $S$. To prove a formula $F$ means to prove the sequent $\Rightarrow F$. For instance, here is a proof of the formula $(p \wedge q) \rightarrow (p \vee q)$. along with its "translation into English". 
+\begin{align*}
+&p \wedge q \Rightarrow p \wedge q & \qquad & \text{("Assume $p \wedge q$.")} \\
+&p \wedge q \Rightarrow p          & \qquad & \text{("Then $p$            ")} \\
+&p \wedge q \Rightarrow p \vee q   & \qquad & \text{("and consequently $p \vee q$.")} \\
+& \qquad \Rightarrow p \vee q   & \qquad & \text{("and consequently $p \vee q$.")}
+\end{align*}
+
+To clarify why a given list of sequents is a proof we will explain, next to every sequent, how its presence in the proof is justified by the axioms and inference rules. It is also convenient to introduce abbreviations (A1, A2, A3, \ldots) for the assumptions used in the proof:
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $p \wedge q.$               & $\qquad$ & \\
+1.  & $A1 \Rightarrow p \wedge q$ & $\qquad$ & -- axiom. \\
+2.  & $A1 \Rightarrow p$          & $\qquad$ & -- $(\wedge E), 1$. \\
+3.  & $A1 \Rightarrow p \vee   q$ & $\qquad$ & -- $(\vee I), 2$.   \\
+4.  & $\Rightarrow (p \wedge q) \rightarrow (p \vee q)$ & $\qquad$ & -- $(\rightarrow I), 3.$   
+\end{tabular}
+\end{center}
+\end{table}
+
+\newcounter{c}
+
+\begin{enumerate}
+\setcounter{c}{0}
+\item[\textbf{Problem 36}] $(p \wedge q \wedge r) \rightarrow (p \wedge r)$.
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $(p \wedge q) \wedge r.$               & $\qquad$ & \\
+\xfc{c}.  & $A1 \Rightarrow (p \wedge q) \wedge r$ & $\qquad$ & -- axiom. \\
+\xfc{c}.  & $A1 \Rightarrow p \wedge q$ & $\qquad$ & -- $(\wedge E), 1$. \\
+\xfc{c}.  & $A1 \Rightarrow r$          & $\qquad$ & -- $(\wedge E), 1$. \\
+\xfc{c}.  & $A1 \Rightarrow p$          & $\qquad$ & -- $(\wedge E), 2$. \\
+\xfc{c}.  & $A1 \Rightarrow p \wedge r$ & $\qquad$ & -- $(\wedge I), 3, 4$.   \\
+\xfc{c}.  & $\Rightarrow (p \wedge q \wedge r) \rightarrow (p \wedge r)$ & $\qquad$ & -- $(\rightarrow I), 4.$   
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 37}] $((p \wedge q) \rightarrow r)) \rightarrow (p \rightarrow (q \rightarrow r))$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $(p \wedge q) \rightarrow r.$                        & $\qquad$ & \\
+\xfc{c}.  & $A1 \Rightarrow (p \wedge q) \rightarrow r$  & $\qquad$ & -- axiom. \\
+A2.         & $p.$                                         & $\qquad$ & \\
+\xfc{c}.  & $A2 \Rightarrow p$                           & $\qquad$ & -- axiom. \\
+A3.         & $q.$                                         & $\qquad$ & \\
+\xfc{c}.  & $A3 \Rightarrow q$                           & $\qquad$ & -- axiom. \\
+\xfc{c}.  & $A2, A3 \Rightarrow p \wedge q$              & $\qquad$ & -- $(\wedge I), 2, 3$. \\
+\xfc{c}.  & $A1, A2, A3 \Rightarrow r$                   & $\qquad$ & -- $(\rightarrow E), 1, \xfp{c}$. \\
+\xfc{c}.  & $A1, A2 \Rightarrow q \rightarrow r$         & $\qquad$ & -- $(\rightarrow I), \xfp{c}$.   \\
+\xfc{c}.  & $A1 \Rightarrow p \rightarrow (q \rightarrow r)$& $\qquad$ & -- $(\rightarrow I), \xfp{c}$.   \\
+\xfc{c}.  & $\Rightarrow ((p \wedge q) \rightarrow r)) \rightarrow (p \wedge r)$ & $\qquad$ & -- $(\rightarrow I), \xfp{c}.$   
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 38}] $(p \rightarrow (q \rightarrow r)) \rightarrow ((p \rightarrow q) \rightarrow (p \rightarrow r))$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $p \rightarrow (q \rightarrow r).$                & $\qquad$ & \\
+A2. & $p \rightarrow q.$                                & $\qquad$ & \\
+A3. & $p.$                                              & $\qquad$ & \\
+\xfc{c}.  & $A1 \Rightarrow p \rightarrow (q \rightarrow r)$  & $\qquad$ & -- axiom. \\
+\xfc{c}.  & $A2 \Rightarrow p \rightarrow q$                  & $\qquad$ & -- axiom. \\
+\xfc{c}.  & $A3 \Rightarrow p$                                & $\qquad$ & -- axiom. \\
+\xfc{c}.  & $A1, A3 \Rightarrow q \rightarrow r$              & $\qquad$ & -- $(\rightarrow E), 1, 3$. \\
+\xfc{c}.  & $A2, A3 \Rightarrow q $                           & $\qquad$ & -- $(\rightarrow E), 2, 3$. \\
+\xfc{c}.  & $A1, A2, A3 \Rightarrow r $                       & $\qquad$ & -- $(\rightarrow E), 4, 5$. \\
+\xfc{c}.  & $A1, A2 \Rightarrow (p \rightarrow r)$            & $\qquad$ & -- $(\rightarrow I), 6$.   \\
+\xfc{c}.  & $A1 \Rightarrow (p \rightarrow q) \rightarrow (p \rightarrow r)$       & $\qquad$ & -- $(\rightarrow I), 7.$   \\
+\xfc{c}.  & $\Rightarrow (p \rightarrow (q \rightarrow r)) \rightarrow ((p \rightarrow q) \rightarrow (p \rightarrow r))$ & $\qquad$ & -- $(\rightarrow I), 8.$    
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 39}] $\neg (p \vee q) \leftrightarrow (\neg p \wedge \neg q)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+% part 1
+A1. & $\neg (p \vee q).$                                      & $\qquad$ & \\
+A2. & $p.$                                                    & $\qquad$ & \\
+\xfl{A1 \Rightarrow \neg (p \vee q)}        {axiom}
+\xfl{A2 \Rightarrow p}                      {axiom}
+\xfl{A2 \Rightarrow p \vee q}               {$(\vee I), 2$}
+\xfl{A1, A2 \Rightarrow \bot}               {$(\neg E), 1, \xfp{c}$}
+\xfl{A1 \Rightarrow \neg q}                 {$(\neg I), \xfp{c}$}
+A3. & $q.$                                                    & $\qquad$ & \\
+\xfl{A3 \Rightarrow q}                      {axiom}
+\xfl{A3 \Rightarrow p \vee q}               {$(\vee I), \xfp{c}$}
+\xfl{A1, A3 \Rightarrow \bot}               {$(\neg E), 1, \xfp{c}$}
+\xfl{A1 \Rightarrow \neg q}                 {$(\neg I), \xfp{c}$} 
+\xfl{A1 \Rightarrow (\neg p \wedge \neg q)} {$(\wedge I), 5, \xfp{c}$}
+\xfl{\Rightarrow \neg (p \vee q) \rightarrow (\neg p \wedge \neg q)} {$(\rightarrow I), \xfp{c}$}  
+\\
+% part 2
+A4. & $\neg p \wedge \neg q.$                                 & $\qquad$ & \\
+A5. & $p \vee q.$                                             & $\qquad$ & \\
+A6. & $p.$                                                    & $\qquad$ & \\
+\xfl{A4 \Rightarrow \neg p \wedge \neg q}        {axiom}
+\xfl{A5 \Rightarrow p \vee q}                    {axiom}
+\xfl{A6 \Rightarrow p}                           {axiom}
+\xfl{A4 \Rightarrow \neg p}                      {$(\wedge E), 12$}
+\xfl{A4, A6 \Rightarrow \bot}                    {$(\neg E), 14, \xfp{c}$}
+A7. & $q.$                                                    & $\qquad$ & \\
+\xfl{A7 \Rightarrow q}                           {axiom}
+\xfl{A4 \Rightarrow \neg q}                      {$(\wedge E), 12$}
+\xfl{A4, A7 \Rightarrow \bot}                    {$(\neg E), 17, \xfp{c}$}
+\xfl{A4, A5 \Rightarrow \bot}                    {$(\vee E), 13, 16, \xfp{c}$}
+\xfl{A4 \Rightarrow \neg (p \vee q) }            {$(\vee E), 13, 16, \xfp{c}$}
+\xfl{\Rightarrow (\neg p \wedge \neg q)  \rightarrow \neg (p \vee q)} {$(\rightarrow I), \xfp{c}$}  
+\\
+\xfl{\Rightarrow \neg (p \vee q) \leftrightarrow (\neg p \wedge \neg q)} {$(\wedge I), 11, \xfp{c}$}  
+     
+\end{tabular}
+\end{center}
+\end{table}
+\newpage
+
+
+\item[\textbf{Problem 40}] $(p \rightarrow q) \rightarrow (\neg q \rightarrow \neg p)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $p \rightarrow q.$                           & $\qquad$ & \\
+A2. & $\neg q.$                                    & $\qquad$ & \\
+1.  & $A1 \Rightarrow p \rightarrow q$             & $\qquad$ & -- axiom. \\
+2.  & $A2 \Rightarrow \neg q$                      & $\qquad$ & -- axiom. \\
+3.  & $p \Rightarrow p$                            & $\qquad$ & -- axiom. \\
+4.  & $A1, p \Rightarrow q$                        & $\qquad$ & -- $(\rightarrow E), 1, 3$. \\
+5.  & $A1, A2,p \Rightarrow \bot$                  & $\qquad$ & -- $(\neg E), 2, 4$. \\
+6.  & $A1, A2 \Rightarrow \neg p$                  & $\qquad$ & -- $(\neg I), 5$. \\
+7.  & $A1 \Rightarrow \neg q \rightarrow \neg p$   & $\qquad$ & -- $(\rightarrow I), 6$.   \\
+8.  & $\Rightarrow (p \rightarrow q) \rightarrow (\neg q \rightarrow \neg p)$ & $\qquad$ & -- $(\rightarrow I), 7.$   
+\end{tabular}
+\end{center}
+\end{table}
+
+\item[\textbf{Problem 41}] $(p \wedge \neg p) \rightarrow q$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $p \wedge \neg p.$                             & $\qquad$ & \\
+1.  & $A1 \Rightarrow p \wedge \neg p$               & $\qquad$ & -- axiom. \\
+2.  & $A1 \Rightarrow p$                             & $\qquad$ & -- $(\wedge E), 1$. \\
+3.  & $A1 \Rightarrow \neg p$                        & $\qquad$ & -- $(\wedge E), 1$. \\
+4.  & $A1 \Rightarrow \bot $                         & $\qquad$ & -- $(\neg E), 2, 3$. \\
+5.  & $A1 \Rightarrow q $                            & $\qquad$ & -- $(C), 4$. \\
+6.  & $\Rightarrow (p \wedge \neg p) \rightarrow q$  & $\qquad$ & -- $(\rightarrow I), 5.$   
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 42}] $((p \wedge q) \vee r) \rightarrow (p \vee r)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $(p \wedge q) \vee r.$                             & $\qquad$ & \\
+\xfl{A1 \Rightarrow (p \wedge q) \vee r}                 {axiom}
+A2. & $p \wedge q$                                       & $\qquad$ & \\
+\xfl{A2 \Rightarrow p \wedge q}                          {axiom}
+\xfl{A2 \Rightarrow p}                                   {$(\wedge E), \xfp{c}$}
+\xfl{A2 \Rightarrow p \vee r}                            {$(\vee I), \xfp{c}$}
+A3. & $r$                                                & $\qquad$ & \\
+\xfl{A3 \Rightarrow r}                                   {axiom}
+\xfl{A3 \Rightarrow p \vee r}                            {$(\vee I), \xfp{c}$}
+\xfl{A1 \Rightarrow p \vee r}                            {$(\vee E), 1, 4, \xfp{c}$} 
+\xfl{\Rightarrow ((p \wedge q) \vee r) \rightarrow (p \vee r)} {$(\rightarrow I), \xfp{c}$} 
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 43}] $p \rightarrow (q \rightarrow p)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{p \Rightarrow p}                                {axiom}
+\xfl{p, q \Rightarrow p}                             {$(W), \xfp{c}$} 
+\xfl{p \Rightarrow q \rightarrow p}                  {$(\rightarrow I), \xfp{c}$} 
+\xfl{\Rightarrow p \rightarrow (q \rightarrow p)}                  {$(\rightarrow I), \xfp{c}$} 
+\end{tabular}
+\end{center}
+\end{table}
+
+\vspace{-10pt}
+\setcounter{c}{0}
+\item[\textbf{Problem 44}] $p \leftrightarrow \neg \neg p$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+% part 1
+A1. & $\neg \neg p$                                           & $\qquad$ & \\
+\xfl{A1 \Rightarrow \neg \neg p}                              {axiom}
+\xfl{\Rightarrow p \vee \neg p}                               {axiom}
+A2. & $p$                                                     & $\qquad$ & \\
+\xfl{A2 \Rightarrow p}                                        {axiom}
+A3. & $\neg p$                                                & $\qquad$ & \\
+\xfl{A3 \Rightarrow \neg p}                                   {axiom}
+\xfl{A1, A3 \Rightarrow \bot}                                 {$(\neg E), \xfp{c}, 1$}
+\xfl{A1, A3 \Rightarrow p}                                    {$(C), \xfp{c}$}
+\xfl{A1 \Rightarrow p}                                        {$(\vee E), 2, 3, \xfp{c}$}
+\xfl{\Rightarrow \neg \neg p \rightarrow p}                   {$(\rightarrow I), \xfp{c}$} 
+%part 2
+\xfl{A2, A3 \Rightarrow \bot}                                 {$(\neg E), 3, 4$}
+\xfl{A2 \Rightarrow \neg \neg p}                              {$(\neg I), \xfp{c}$}
+\xfl{\Rightarrow p \rightarrow \neg \neg p}                   {$(\rightarrow I), \xfp{c}$} 
+\xfl{\Rightarrow p \leftrightarrow \neg \neg p}               {$(\wedge I), 8, \xfp{c}$}  
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\vspace{-10pt}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 45}] $(p \rightarrow q) \vee (q \rightarrow p)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{\Rightarrow p \vee \neg p}                                   {axiom}
+\xfl{p \Rightarrow p }                                            {axiom}
+\xfl{p, q \Rightarrow p }                                         {$(W), \xfp{c}$}
+\xfl{p \Rightarrow q \rightarrow p }                              {$(\rightarrow I), \xfp{c}$}
+\xfl{p \Rightarrow (p \rightarrow q) \vee (q \rightarrow p) }     {$(\vee I), \xfp{c}$}
+\xfl{\neg p \Rightarrow \neg p }                                  {axiom}
+\xfl{p, \neg p \Rightarrow \bot }                                 {$(\neg E), 2, \xfp{c}$}
+\xfl{p, \neg p \Rightarrow q }                                    {$(C), \xfp{c}$}
+\xfl{\neg p \Rightarrow p \rightarrow q }                         {$(\rightarrow I), \xfp{c}$}
+\xfl{\neg p \Rightarrow (p \rightarrow q) \vee (q \rightarrow p) }{$(\vee I), \xfp{c}$}
+\xfl{\Rightarrow (p \rightarrow q) \vee (q \rightarrow p) }       {$(\vee E), 1, 5, \xfp{c}$}
+
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 46}] $ \neg (p \wedge q) \leftrightarrow (\neg p \vee \neg q)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\neg (p \wedge q)$                                     & $\qquad$ & \\
+\xfl{A1 \Rightarrow \neg (p \wedge q)}                        {axiom}
+\xfl{\Rightarrow p \vee \neg p}                               {axiom}
+A2. & $p$                                                     & $\qquad$ & \\
+\xfl{A2 \Rightarrow p}                                        {axiom}
+\xfl{q \Rightarrow q}                                         {axiom}
+\xfl{A2, q \Rightarrow p \wedge q}                            {$(\wedge I), 3, \xfp{c}$}
+\xfl{A1, A2, q \Rightarrow \bot}                              {$(\neg E), \xfp{c}, 1$}
+\xfl{A1, A2 \Rightarrow \neg q}                               {$(\neg I), \xfp{c}$}
+\xfl{A1, A2 \Rightarrow \neg p \vee \neg q}                   {$(\vee I), \xfp{c}$}
+A3. & $\neg p$                                                & $\qquad$ & \\
+\xfl{A3 \Rightarrow \neg p}                                   {axiom}
+\xfl{A3 \Rightarrow \neg p \vee \neg q}                       {$(\vee I), \xfp{c}$}
+\xfl{A1 \Rightarrow \neg p \vee \neg q}                       {$(\vee E), 2, 8, \xfp{c}$}
+\xfl{   \Rightarrow \neg (p \wedge q) \rightarrow \neg p \vee \neg q}{$(\rightarrow I), \xfp{c}$}
+\\
+A4. & $\neg p \vee \neg q$                                    & $\qquad$ & \\
+\xfl{A4 \Rightarrow \neg p \vee \neg q}                       {axiom}
+A5. & $\neg p $                                               & $\qquad$ & \\
+\xfl{A5 \Rightarrow \neg p }                                  {axiom}
+\xfl{p \Rightarrow p}                                         {axiom}
+\xfl{A5, p \Rightarrow \bot}                                  {axiom}
+\xfl{A5, p, q \Rightarrow \bot}                               {$(W), \xfp{c}$}
+\xfl{A5 \Rightarrow \neg (p \wedge q)}                        {$(\neg I), \xfp{c}$}
+A6. & $\neg q $                                               & $\qquad$ & \\
+\xfl{A6 \Rightarrow \neg q }                                  {axiom}
+\xfl{A6, q \Rightarrow \bot}                                  {axiom}
+\xfl{A6, p, q \Rightarrow \bot}                               {$(W), \xfp{c}$}
+\xfl{A6 \Rightarrow \neg (p \wedge q)}                        {$(\neg I), \xfp{c}$}
+\xfl{A4 \Rightarrow \neg (p \wedge q)}                        {$(\vee E), 13, 18, \xfp{c}$}
+\xfl{   \Rightarrow \neg p \vee \neg q \rightarrow \neg (p \wedge q)}{$(\rightarrow I), \xfp{c}$}
+\\
+\xfl{   \Rightarrow \neg p \vee \neg q \leftrightarrow \neg (p \wedge q)}{$(\wedge I), 12, \xfp{c}$}
+
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\newpage
+
+\setcounter{c}{0}
+\item[\textbf{Problem 47}] $(p \vee q) \leftrightarrow (\neg p \rightarrow q)$.
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $p \vee q$                                             & $\qquad$ & \\
+\xfl{A1 \Rightarrow p \vee q}                                {axiom}
+\xfl{p \Rightarrow p}                                        {axiom}
+\xfl{\neg p \Rightarrow \neg p}                              {axiom}
+\xfl{p, \neg p \Rightarrow \bot}                             {$(\neg E), 2, \xfp{c}$}
+\xfl{p, \neg p \Rightarrow q}                                {$(C), \xfp{c}$}
+\xfl{q \Rightarrow q}                                        {axiom}
+\xfl{A1, \neg p \Rightarrow q}                               {$(\vee E), 1, 5, \xfp{c}$}
+\xfl{A1 \Rightarrow \neg p \rightarrow q}                    {$(\rightarrow I), \xfp{c}$}
+\xfl{  \Rightarrow (p \vee q) \rightarrow (\neg p \rightarrow q)}  {$(\rightarrow I), \xfp{c}$}
+\\
+A2. & $\neg p \rightarrow q$                                 & $\qquad$ & \\
+\xfl{A2 \Rightarrow \neg p \rightarrow q}                    {axiom}
+\xfl{A2, \neg p \Rightarrow q}                               {$(\rightarrow E), 3, \xfp{c}$}
+\xfl{A2, \neg p \Rightarrow p \vee q}                        {$(\vee I), \xfp{c}$}
+\xfl{p \Rightarrow p}                                        {axiom}
+\xfl{p \Rightarrow p \vee q}                                 {axiom}
+\xfl{\Rightarrow p \vee \neg p}                              {axiom}
+\xfl{A2 \Rightarrow p \vee q}                                {$(\vee E), \xfp{c}, 12, 14$}
+\xfl{  \Rightarrow (\neg p \rightarrow q) \rightarrow (p \vee q)}{$(\rightarrow I), \xfp{c}$}
+\\
+\xfl{   \Rightarrow (p \vee q) \leftrightarrow (\neg p \rightarrow q)}{$(\wedge I), 9, \xfp{c}$}
+
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\end{enumerate}
+
+\newpage
+
+\subsection{Soundness and Completeness of Natural Deduction}
+A sequent \eqref{5_seq_1} is called \textit{tautological} if the corresponding formula \eqref{5_seq_3} is a tautology (in other words, if $F$ is entailed by the assumptions $G_1, \ldots, G_n$). An inference rule is said to be \textit{sound} if, for any instance
+\begin{equation*}
+    \frac{S_1 \; \ldots \: S_k}{S}
+\end{equation*}
+of this rule such that the premises $S_1, \ldots, S_k$ are tautological, the conclusion $S$ is tautological also.
+
+
+\begin{enumerate}
+\item[\textbf{Problem 48}] Rules $(\rightarrow I)$ and $(\vee E)$ are sound.  \\
+\begin{center}
+\boxed{
+(\rightarrow I) \qquad \frac{\Gamma, F \Rightarrow G}{\Gamma \Rightarrow F \rightarrow G}
+}
+\end{center}
+Goal: If $(\Gamma^{\wedge} \wedge F) \rightarrow G$ is tautology, then $\Gamma^{\wedge} \rightarrow (F \rightarrow G)$ is tautology. 
+\begin{proof}
+If $(\Gamma^{\wedge} \wedge F) \rightarrow G$ is tautology, then $\forall$ interpretation $I$,  $((\Gamma^{\wedge} \wedge F) \rightarrow G)^I = t$. 
+\begin{itemize}
+\item If $(\Gamma^{\wedge})^I = f$, then $(\Gamma^{\wedge} \rightarrow (F \rightarrow G))^I = t$. 
+\item If $F^I = f$, then $(F \rightarrow G)^I = t$, thus $(\Gamma^{\wedge} \rightarrow (F \rightarrow G))^I = t$. 
+\item If $G^I = t$, then $(F \rightarrow G)^I = t$, thus $(\Gamma^{\wedge} \rightarrow (F \rightarrow G))^I = t$. 
+\end{itemize}
+Otherwise, $(\Gamma^{\wedge} \wedge F) \rightarrow G$ can't be tautology. \\
+Thus, $\forall$ interpretation $I$,  $(\Gamma^{\wedge} \rightarrow (F \rightarrow G))^I = t$. 
+\end{proof}
+
+\begin{center}
+\boxed{
+(\vee E) \qquad \frac{ \Gamma \Rightarrow F \vee G \quad \Delta, F \Rightarrow H \quad \Sigma, G \Rightarrow H} {  \Gamma, \Delta, \Sigma \Rightarrow H}
+}
+\end{center}
+Goal: If $\left.
+        \begin{array}{c}      
+        \Gamma^{\wedge} \rightarrow (F \vee G) \\
+        (\Delta^{\wedge} \wedge F) \rightarrow H \\
+        (\Sigma^{\wedge} \wedge G) \rightarrow H
+        \end{array}\right\}$
+       are tautology, then 
+       $(\Gamma^{\wedge} \wedge \Delta^{\wedge} \wedge \Sigma^{\wedge}) \rightarrow H$ 
+       is tautology. 
+\begin{proof}
+From problem 19, we only need to prove that the set $\{\Gamma^{\wedge}, \Delta^{\wedge}, \Sigma^{\wedge}, \neg H \}$ is unsatisfiable. \\
+Suppose $\exists I$ that the satisfies the set $\{\Gamma^{\wedge}, \Delta^{\wedge}, \Sigma^{\wedge}, \neg H \}$.
+Then $(\Gamma^{\wedge})^I = (\Delta^{\wedge})^I = (\Sigma^{\wedge})^I = (\neg H)^I = \neg (H^I) = t$, thus, $(H^I) = f$. \\
+Since $\Gamma^{\wedge} \rightarrow (F \vee G)$ is tautology, then $(\Gamma^{\wedge} \rightarrow (F \vee G))^I = t$. Thus, $(F \vee G)^I = \vee(F^I, G^I) = t$. This is to say, either $F^I$ or $G^I$ is true. \\
+If $F^I = t$, then $((\Delta^{\wedge} \wedge F) \rightarrow H)^I = f$. 
+If $G^I = t$, then $((\Sigma^{\wedge} \wedge G) \rightarrow H)^I = f$. \\
+This contradicts that both rules are tautology. Thus, the set $\{\Gamma^{\wedge}, \Delta^{\wedge}, \Sigma^{\wedge}, \neg H \}$ is unsatisfiable. 
+\end{proof}
+
+
+\end{enumerate}
+
+\newpage
+
+Since all rules of natural deduction are sound, and all axioms are tautological, we can conclude that every sequent that can be proved by natural deduction is tautological. In this sense, the system of natural deduction is sound. 
+
+\begin{enumerate}
+\item[\textbf{Problem 49}] Let $A_1, \ldots, A_n$ be the list of all atoms, and let $I$ be an interpretation. Define the literals $L_1, \ldots, L_n$ as follows:
+
+\begin{gather*}
+L_i =  \left\{
+        \begin{array}{c}      
+        A_i \qquad \text{if} \: I \models A_i, \\
+        \neg A_i \qquad \text{otherwise.}
+        \end{array}\right.
+\end{gather*}
+
+Show that for every formula $F$, 
+\begin{enumerate}[(a)]
+\item if $I \models F$ then the sequent $L_i, \ldots, L_n \Rightarrow F$ can be proved by natural deduction; 
+\item if $I \not \models F$ then the sequent $L_i, \ldots, L_n \Rightarrow \neg F$ can be proved by natural deduction; 
+\end{enumerate}
+
+\begin{proof}
+Prove by structural induction. 
+\begin{enumerate}[{Case} 1.]
+\item When $F$ is an atom, say $F = A$. 
+\begin{enumerate}[(a)]
+\item if $I \models F \Rightarrow I \models A \Rightarrow \exists L_i = A$, thus
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{L_i \Rightarrow F}                                {axiom}
+\xfl{L_1 \cdots L_n \Rightarrow F}                     {$(W), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+ 
+\item if $I \not \models F \Rightarrow I \not \models F \Rightarrow \exists L_i = \neg A$, thus
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{L_i \Rightarrow \neg F}                                {axiom}
+\xfl{L_1 \cdots L_n \Rightarrow \neg F}                     {$(W), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+\end{enumerate}
+
+\item We don't need to consider $\top$ (not part of formula). When $F = \bot$. 
+\begin{enumerate}[(a)]
+\item Nothing satisfies $\bot$, no need to consider this case. 
+\item if $I \not \models F$, 
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{\bot \Rightarrow \bot}                    {axiom}
+\xfl{\Rightarrow \neg \bot}                                {$(\neg I), \xfp{c}$}
+\xfl{L_1 \cdots L_n \Rightarrow \neg \bot}                 {$(W), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+\end{enumerate}
+
+\newpage
+\item If $F$ has the above property, then so does $\neg F$. \\
+Induction hypothesis: 
+$I \models F$ then the sequent $L_i, \ldots, L_n \Rightarrow F$ is provable. 
+$I \not \models F$ then the sequent $L_i, \ldots, L_n \Rightarrow \neg F$ is provable. 
+\begin{enumerate}[(a)]
+\item if $I \models \neg F$, $I \not \models F$, thus the sequent $L_i, \ldots, L_n \Rightarrow \neg F$ is provable. 
+\item if $I \not \models \neg F$ then $I \models F$, thus
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{L_1 \cdots L_n \Rightarrow F}                         {hypothesis}
+\xfl{\neg F \Rightarrow \neg F}                            {axiom}
+\xfl{L_1 \cdots L_n, \neg F \Rightarrow \bot}              {$(\neg E), 1, \xfp{c}$}
+\xfl{L_1 \cdots L_n \Rightarrow \neg \neg F}               {$(\neg I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+\end{enumerate}
+
+\item[Case 4.1] If $F_1, F_2$ has the above property, then so does $F = F_1 \wedge F_2$. 
+\begin{enumerate}[(a)]
+\item if $I \models F \Rightarrow I \models F_1, F_2$, then
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+\xfl{L_1 \cdots L_n \Rightarrow F_1}                         {hypothesis}
+\xfl{L_1 \cdots L_n \Rightarrow F_2}                         {hypothesis}
+\xfl{L_1 \cdots L_n \Rightarrow F_1 \wedge F_2}              {$(\wedge I), 1, \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+\item if $I \not \models F \Rightarrow I \not \models F_1 \text{ or } I \not \models F_2$. 
+\begin{itemize}
+\item if $I \not \models F_1$, then $L_i, \ldots, L_n \Rightarrow \neg F_1$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{F_1 \wedge F_2 \Rightarrow F_1 \wedge F_2}              {axiom}
+    \xfl{F_1 \wedge F_2 \Rightarrow F_1}                         {$(\wedge E), \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_1}                    {hypothesis}
+    \xfl{L_1 \cdots L_n, F_1 \wedge F_2 \Rightarrow \bot }       {$(\neg E), 2, \xfp{c}$}
+    \xfl{L_1 \cdots L_n  \Rightarrow \neg (F_1 \wedge F_2)}      {$(\neg I), \xfp{c}$}
+    \end{tabular}
+    \end{center}
+    \end{table}
+\item if $I \not \models F_2$, then $L_i, \ldots, L_n \Rightarrow \neg F_2$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{F_1 \wedge F_2 \Rightarrow F_1 \wedge F_2}              {axiom}
+    \xfl{F_1 \wedge F_2 \Rightarrow F_2}                         {$(\wedge E), \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_2}                    {hypothesis}
+    \xfl{L_1 \cdots L_n, F_1 \wedge F_2 \Rightarrow \bot }       {$(\neg E), 2, \xfp{c}$}
+    \xfl{L_1 \cdots L_n  \Rightarrow \neg (F_1 \wedge F_2)}      {$(\neg I), \xfp{c}$}
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{itemize}
+
+\newpage
+\item[Case 4.2] If $F_1, F_2$ has the above property, then so does $F = F_1 \vee F_2$. 
+\begin{enumerate}[(a)]
+\item if $I \models F \Rightarrow I \models F_1 \text{ or } I \models F_2$. 
+\begin{itemize}
+\item if $I \models F_1$, then $L_i, \ldots, L_n \Rightarrow F_1$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow F_1}                    {hypothesis}
+    \xfl{L_1 \cdots L_n  \Rightarrow F_1 \vee F_2}         {$(\vee I), \xfp{c}$}
+    \end{tabular}
+    \end{center}
+    \end{table}
+\item if $I \models F_2$, then $L_i, \ldots, L_n \Rightarrow F_2$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow F_2}                    {hypothesis}
+    \xfl{L_1 \cdots L_n  \Rightarrow F_1 \vee F_2}         {$(\vee I), \xfp{c}$}
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{itemize}
+\item if $I \not \models F \Rightarrow I \not \models F_1, F_2$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_1}               {hypothesis}
+    \xfl{F_1 \Rightarrow F_1}                               {axiom}
+    \xfl{L_1 \cdots L_n, F_1 \Rightarrow \bot}              {$(\neg E), 1, \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_2}               {hypothesis}
+    \xfl{F_2 \Rightarrow F_2}                               {axiom}
+    \xfl{L_1 \cdots L_n, F_2 \Rightarrow \bot}              {$(\neg E), 4, \xfp{c}$}    
+    \xfl{F_1 \vee F_2 \Rightarrow F_1 \vee F_2}             {axiom}
+    \xfl{L_1 \cdots L_n, F_1 \vee F_2 \Rightarrow \bot}     {$(\vee E), 3, 6, \xfp{c}$}    
+    \xfl{L_1 \cdots L_n \Rightarrow \neg (F_1 \vee F_2)}    {$(\neg I), \xfp{c}$}      
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{enumerate}
+% end case 4.2
+
+\item[Case 4.3] If $F_1, F_2$ has the above property, then so does $F = F_1 \rightarrow F_2$. 
+\begin{enumerate}[(a)]
+\item if $I \models F \Rightarrow I \models F_2 \text{ or } I \not \models F_1, F_2$. 
+\begin{itemize}
+\item if $I \models F_2$, then
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow F_2}                    {hypothesis}
+    \xfl{L_1 \cdots L_n, F_1 \Rightarrow F_2}               {$(W), \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow F_1 \rightarrow F_2}    {$(\rightarrow I), \xfp{c}$}    
+    \end{tabular}
+    \end{center}
+    \end{table}
+\item if $I \not \models F_1, F_2$, then 
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_1}                 {hypothesis}
+    \xfl{F_1 \Rightarrow F_1}                                 {axiom}
+    \xfl{L_1 \cdots L_n, F_1 \Rightarrow \bot}                {$(\neg E), 1, \xfp{c}$}
+    \xfl{L_1 \cdots L_n, F_1 \Rightarrow F_2}                 {$(C), \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow F_1 \rightarrow F_2}      {$(\rightarrow I), \xfp{c}$}        
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{itemize}
+\item if $I \not \models F \Rightarrow I \models F_1 \text{ and} I \not \models F_2$, thus
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{L_1 \cdots L_n \Rightarrow F_1}                          {hypothesis}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg F_2}                     {hypothesis}
+    \xfl{F_1 \rightarrow F_2 \Rightarrow F_1 \rightarrow F_2}     {axiom}
+    \xfl{L_1 \cdots L_n, F_1 \rightarrow F_2 \Rightarrow F_2}     {$(\rightarrow E), 1, \xfp{c}$}
+    \xfl{L_1 \cdots L_n, F_1 \rightarrow F_2 \Rightarrow \bot}    {$(\neg E), 2, \xfp{c}$}
+    \xfl{L_1 \cdots L_n \Rightarrow \neg (F_1 \rightarrow F_2)}   {$(\neg I), \xfp{c}$}      
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{enumerate}
+
+
+
+\end{enumerate}
+
+\end{enumerate}
+\end{proof}
+
+
+\item[\textbf{Problem 50}] For any tautology $F$, the sequent $\Rightarrow F$ can be proved by natural deduction. \\
+Let $A_1, \ldots, A_n$ be the atoms, and for $\forall k \in \mathbb{N}$, $p(k)$ the statements:\\
+\fbox{
+\parbox{0.8\linewidth}{If $k \leq n$ then $\forall L_{k+1}, \ldots, L_n$, s.t. $\forall i$, $L_i = A_i$ or $L_i = \neg A_i$, the sequent $L_{k+1}, \ldots, L_n \Rightarrow F$ is provable in natural deduction.}
+}\\
+We will prove that $\forall k \in \mathbb{N}$, $p(k)$ holds. Then the theorem will follow as $p(n)$. Prove by mathematical induction:
+\begin{itemize}
+\item Base case: $k = 0$. \\
+$
+\text{Define  } I(A_i) =  \left\{
+        \begin{array}{c}      
+        t \qquad \text{if} \: L_i = A_i, \\
+        \:f \qquad \text{if} \: L_i = \neg A_i.
+        \end{array}\right.
+$
+Then $L_i =  \left\{
+        \begin{array}{c}      
+        A_i \qquad \text{if} \: I \models A_i, \\
+        \neg A_i \qquad \text{otherwise.}
+        \end{array}\right.
+$ \\
+Since $F$ is tautology, $I \models F$. Thus, we can apply Problem 49 directly to get a natural deduction proof of $L_1, L_2, \ldots, L_n \Rightarrow F$. This demonstrates $p(0)$. 
+\item Induction step: $\forall k > 0$, let:
+\begin{eqnarray*}
+S_t =& A_k, L_{k+1}, \ldots, L_n &\Rightarrow F \\
+S_f =& \neg A_k, L_{k+1}, \ldots, L_n &\Rightarrow F 
+\end{eqnarray*}
+Suppose we have $p(k-1)$. Applying $p(k-1)$ with $L_{(k-1)+1} = A_k$, give us a natural deduction proof of $S_t$.   
+Applying $p(k-1)$ with $L_{(k-1)+1} = \neg A_k$, give us a natural deduction proof of $S_f$.  Then we can prove $ L_{k+1}, \ldots, L_n \Rightarrow F $ as follow:
+    \setcounter{c}{0}
+    \begin{table}[H]
+    \begin{center}
+    \begin{tabular}{llll}
+    \xfl{A_k \vee \neg A_k}                                       {axiom}
+    \xfl{A_k, L_{k+1}, \ldots, L_n \Rightarrow F}                {$S_t$}
+    \xfl{\neg A_k, L_{k+1}, \ldots, L_n \Rightarrow F}           {$S_f$}
+    \xfl{L_{k+1}, \ldots, L_n \Rightarrow F}                     {$(\vee E), 1, 2, 3$}   
+   
+    \end{tabular}
+    \end{center}
+    \end{table}
+\end{itemize}
+By the principle of deduction, we can prove $p(n)$, the sequent $\Rightarrow F$ can be proved by natural deduction. 
+
+
+
+
+
+\newpage
+
+\item[\textbf{Problem 51}] Every tautology sequent can be proved by natural deduction. 
+
+Let $\Gamma \rightarrow F$ be a tautological sequent ($\Gamma \neq \emptyset$), assuming that $\Gamma = \{\Gamma_1, ..., \Gamma_n\}$.
+  \begin{itemize}
+	\item By Problem 50, we get that\\
+	  $\Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_n \rightarrow F$.
+
+	\item we can prove $\Gamma \Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_n$ by induction on n.\\
+	  \begin{itemize}
+		\item Base case ($n=1$):\\
+		  $\Gamma \Rightarrow \Gamma_1$, since $\Gamma=\{\Gamma_1\}$.
+		\item Induction:\\
+		  Assuming that $\Gamma \Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_k$ if $\Gamma=\{\Gamma_1, ..., \Gamma_k\}$\\
+		  Then for $n=k+1$, \\
+			\begin{tabular}{l l}
+		  1. $\Gamma_1, ..., \Gamma_k \Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_k$ & -Induction Hypothesis\\
+											2. $\Gamma_{k+1} \Rightarrow \Gamma_{k+1}$ & -axiom\\
+		  3. $\Gamma_1, ..., \Gamma_k, \Gamma_{k+1} \Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_k \wedge \Gamma_k$ & -($\wedge I$),1,2\\ 
+			\end{tabular}
+		\newline
+		  So $\Gamma \Rightarrow \Gamma_1 \wedge ...  \wedge \Gamma_k, \wedge \Gamma_{k+1}$ if $\Gamma=\{\Gamma_1, ..., \Gamma_k, \Gamma_{k+1}\}$\\
+	  \end{itemize}
+  \end{itemize}
+  Thus, we have\\
+  \begin{tabular}{l l}
+	1. $\Rightarrow (\Gamma_1 \wedge ... \wedge \Gamma_n \rightarrow F$ & -Problem 50\\
+			2. $\Gamma \Rightarrow \Gamma_1 \wedge ... \wedge \Gamma_n$ & -Induction Proof\\
+	  3. $\Gamma \Rightarrow F$ & - ($\rightarrow$ E), 1, 2\\
+  \end{tabular}
+  \newline
+	 In the case that $\Gamma=\emptyset$, the formula corresponding to the sequent $\Gamma \Rightarrow F$ is actually just F, and the result follows directly from Problem 50.\\
+
+\end{enumerate}
+
+In this sense, the system of natural deduction is complete. 
+
+  
+
+
+\newpage
+\subsection{Quiz 5}
+\noindent
+Prove by natural deduction:
+\begin{equation*}
+    ((p \rightarrow q) \rightarrow p) \rightarrow p
+\end{equation*}
+
+\begin{proof} $~$\\
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $(p \rightarrow q) \rightarrow p$.                    & $\qquad$ & \\
+\xfl{A1 \Rightarrow (p \rightarrow q) \rightarrow p}        {axiom}
+\xfl{\Rightarrow p \vee \neg p}                             {axiom}
+A2. & $p$.                                                  & $\qquad$ & \\
+\xfl{A2 \Rightarrow p}                                      {axiom}
+%\xfl{A2, p \Rightarrow q }                                  {$(W), \xfp{c}$}
+%\xfl{A2 \Rightarrow p \rightarrow q }                       {$(\rightarrow I), \xfp{c}$}
+%\xfl{A1, A2 \Rightarrow p}                                  {$(\rightarrow E), \xfp{c}, 1$}
+A3. & $\neg p$.                                             & $\qquad$ & \\
+\xfl{A3 \Rightarrow \neg p}                                 {axiom}
+\xfl{p \Rightarrow p}                                       {axiom}
+\xfl{A3, p \Rightarrow \bot}                                {$(\neg E), \xfp{c}, 4$}
+\xfl{A3, p \Rightarrow q}                                   {$(C), \xfp{c}$}
+\xfl{A3 \Rightarrow p \rightarrow q}                        {$(\rightarrow I), \xfp{c}$}
+\xfl{A1, A3 \Rightarrow p}                                  {$(\rightarrow E), \xfp{c}, 1$}
+\xfl{A1 \Rightarrow p}                                     {$(\vee E), 2, 3, \xfp{c}$}
+\xfl{\Rightarrow  ((p \rightarrow q) \rightarrow p) \rightarrow p}{$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+\end{proof}
+
+\subsection{Quiz 6}
+The following rule 
+\begin{equation*}
+\frac{\Gamma \Rightarrow F \rightarrow G \qquad \Delta \Rightarrow \neg G}{\Gamma, \Delta \Rightarrow \neg F}
+\end{equation*}
+is sound in $G_3$. \\\\
+\noindent
+We need to show that if 
+\begin{eqnarray}
+\label{delta}
+\Delta \rightarrow \neg G \\
+\label{gamma}
+\Gamma \rightarrow (F \rightarrow G)
+\end{eqnarray}
+are tautological in $G_3$, then
+\begin{equation}
+\Gamma \wedge \Delta \rightarrow \neg F
+\end{equation}
+is also tautological. 
+
+\begin{proof}
+\eqref{delta} is tautological means that $\forall I$, we have 
+\begin{equation*}
+(\Delta \rightarrow \neg G)^I = \rightarrow (\Delta^I, (\neg G)^I) = 1
+\end{equation*}
+From definition, we know that 
+\begin{equation}
+\label{rule1}
+\Delta^I \leq (\neg G)^I
+\end{equation}
+
+\eqref{gamma} is tautological means that $\forall I$, we have 
+\begin{equation*}
+(\Gamma \rightarrow (F \rightarrow G))^I = \rightarrow (\Gamma^I, (F \rightarrow G)^I) = 1
+\end{equation*}
+From definition, we know that 
+\begin{equation}
+\label{rule2}
+\Gamma^I \leq (F \rightarrow G)^I
+\end{equation}
+Consider the following two cases:
+\begin{itemize}
+\item if $F^I \leq G^I$, then $(F \rightarrow G)^I = \rightarrow (F^I, G^I) = 1$. Clearly, \eqref{rule2} holds true. We have:
+\begin{equation}
+\label{case_1}
+(\neg F)^I \geq (\neg G)^I
+\end{equation}
+This is because if both $F^I$ and $G^I$ are greater than 0, then $(\neg F)^I = (\neg G)^I = 0$. If both $F^I$ and $G^I$ equal 0, then $(\neg F)^I = (\neg G)^I = 1$. If only one of them equals 0, it must be $0 = F^I < G^I$, then $0 = (\neg G)^I < (\neg F)^I = 1$. \\
+Combining \eqref{rule1} and \eqref{case_1}, we have:
+\begin{equation*}
+\Delta^I \leq (\neg G)^I \leq (\neg F)^I
+\end{equation*}
+Thus, 
+\begin{equation*}
+\min(\Gamma^I, \Delta^I) \leq (\neg F)^I
+\end{equation*}
+
+
+\item if $F^I > G^I$, then $(F \rightarrow G)^I = \rightarrow (F^I, G^I) = G^I$. From \eqref{rule1} and  \eqref{rule2}:
+\begin{gather*}
+ \left\{
+        \begin{array}{c}      
+        \Delta^I \leq \neg G^I \\
+        \Gamma^I \leq \:\:\:G^I
+        \end{array}\right.
+\end{gather*}
+Clearly, one of $G^I$ and $(\neg G)^I$ must be zero. (If $G^I = 0$, the claim holds. If $G^I > 0$, then $(\neg G)^I = 0$.) \\
+Thus, 
+\begin{equation*}
+\min(\Gamma^I, \Delta^I) = 0 \leq (\neg F)^I 
+\end{equation*}
+\end{itemize}
+From both cases, we have $\min(\Gamma^I, \Delta^I) \leq (\neg F)^I$, this is the same as:
+\begin{eqnarray*}
+(\Gamma \wedge \Delta)^I \leq (\neg F)^I \\
+\rightarrow ((\Gamma \wedge \Delta)^I, (\neg F)^I) = 1\\
+(\Gamma \wedge \Delta \rightarrow \neg F)^I = 1
+\end{eqnarray*}
+Thus, $\Gamma \wedge \Delta \rightarrow \neg F$ is tautological in $G_3$. 
+\end{proof}
+

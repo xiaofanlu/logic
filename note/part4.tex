@@ -1,0 +1,242 @@
+\section{Part 4}
+\subsection{Logic Programs and Stable Models}
+In this part of the course, a \textit{rule} is a propositional formula of the form $F \rightarrow G$ where $F$ and $G$ contain no connectives other than $\top, \bot, \wedge, \vee$, and $\neg$ (that is to say, $F \rightarrow G$ has no implications other than the one explicitly shown). The notational conventions and terminology related to positive rules that are introduced in the first paragraph of Part 3 of these lecture notes apply to these more general rules as well. A \textit{(logic) program} is a set of rules. A rule is \textit{flat} if (i) its head is $\bot$, or a literal, or a disjunction of several literals, and (ii) it body is $\top$, or a literal, or a conjunction of several literals. 
+
+For any rule $R$ and any set $M$ of atoms, the \textit{reduct} of $R$ with respect to $M$ is the positive rule obtained from $R$ by replacing each maximal subformula of the form $\neg F$ with $\top$ if $M$ satisfies that subformula, and with $\bot$ otherwise. For instance, the reduct of the rule
+\begin{equation*}
+p \leftarrow q \wedge \neg (p \wedge \neg r)
+\end{equation*}
+with respect to \{p\} is 
+\begin{equation*}
+p \leftarrow q \wedge \bot
+\end{equation*}
+Indeed, $\{p\}$ satisfies the formula $p \wedge \neg r$, and consequently doesn't satisfy its negation; in the reduct, its negation is replaced with $\bot$. The reduct of the same rule with respect to $\{q\}$ is 
+\begin{equation*}
+p \leftarrow q \wedge \top
+\end{equation*}
+because $\{q\}$ doesn't satisfy the formula $p \wedge \neg r$, and consequently satisfies its negation; in the reduct, its negation is replaced with $\top$. 
+
+The \textit{reduct} of a program $\Gamma$ with respect to $M$ is the positive program consisting of the reducts of the rules of $\Gamma$ with respect to $M$. 
+
+\textbf{A set $M$ of atoms is a \textit{stable model} of a logic program $\Gamma$ if $M$ is a minimal model of the reduct of $\Gamma$ with respect to $M$.} The use of the term "stable model of $\Gamma$" is justified by the fact that every stable model of $\Gamma$ in the sense of this definition is a model of $\Gamma$. Indeed, the reduct $\Gamma'$ of $\Gamma$ with respect to $M$ is obtained from $\Gamma$ by replacing some subformulas not satisfied by $M$ with $\bot$; consequently $M$ is a model of the reduct iff $M$ is a model of $\Gamma$. 
+
+For instance, $\{p, q\}$ is a stable model of the program
+\begin{equation}
+\begin{gathered}
+p \leftarrow q,  \\
+q \leftarrow \neg r
+\end{gathered}
+\label{stable_model}
+\end{equation}
+because the reduct of this program with respect to $\{p, q\}$ is the positive program
+\begin{equation*}
+\begin{gathered}
+p \leftarrow q,  \\
+q 
+\end{gathered}
+\end{equation*}
+and $\{p, q\}$ is a minimal model of this positive program. 
+
+\begin{enumerate}
+\item[\textbf{Problem 28}] Does program \eqref{stable_model} have stable models other than $\{p, q\}$? \\
+Let's check all possible combinations:
+\begin{itemize}
+\item $\emptyset$, this is not a model of the original program $\Gamma$. 
+\item $\{p\}$, this is not a model of the original program $\Gamma$. 
+\item $\{q\}$, this is not a model of the original program $\Gamma$. 
+\item $\{r\}$, the reduct of $\Gamma$ with respect to $\{r\}$ is:
+\begin{equation*}
+\begin{gathered}
+p \leftarrow q,  \\
+q \leftarrow \bot 
+\end{gathered}
+\end{equation*}
+the minimal model of the reduct is $\emptyset$. Thus, $\{r\}$ is not a stable model of program $\Gamma$. 
+\item $\{p, q\}$, the reduct of $\Gamma$ with respect to $\{p, q\}$ is
+\begin{equation*}
+\begin{gathered}
+p \leftarrow q,  \\
+q 
+\end{gathered}
+\end{equation*}
+the minimal model of the reduct is $\{p, q\}$. Thus, $\{p, q\}$ is a stable model of program $\Gamma$. 
+
+\item $\{p, r\}$, the reduct of $\Gamma$ with respect to $\{p, r\}$ is
+\begin{equation*}
+\begin{gathered}
+p \leftarrow q,  \\
+q \leftarrow \bot
+\end{gathered}
+\end{equation*}
+the minimal model of the reduct is $\emptyset$. Thus, $\{p, r\}$ is not a stable model of program $\Gamma$. 
+
+\item $\{q, r\}$, this is not a model of the original program $\Gamma$. 
+
+\item $\{p, q, r\}$, the reduct of $\Gamma$ with respect to $\{p, q, r\}$ is
+\begin{equation*}
+\begin{gathered}
+p \leftarrow q,  \\
+q \leftarrow \bot
+\end{gathered}
+\end{equation*}
+the minimal model of the reduct is $\emptyset$. Thus, $\{p, q, r\}$ is not a stable model of program $\Gamma$. 
+\end{itemize}
+Thus, program \eqref{stable_model} don't have any stable model other than $\{p, q\}$.
+\newpage
+
+\item[\textbf{Problem 29}] For each of the one-rule programs
+\begin{equation*}
+ p \leftarrow \neg q
+\end{equation*}
+and 
+\begin{equation*}
+ p \leftarrow \neg\neg p
+\end{equation*}
+find its minimal models and its stable models. 
+\end{enumerate}
+\fbox{\parbox[c][4em][t]{0.5\textwidth}{$p \leftarrow \neg q$ \\
+Minimal model: $\{q\}$ and $\{p\}$  \\
+Stable model: $\{p\}$} }
+\fbox{\parbox[c][4em][t]{0.5\textwidth}{$p \leftarrow \neg\neg p$ \\
+Minimal model: $\emptyset$ \\
+Stable model: $\emptyset$ and $\{p\}$. } }
+
+
+
+
+The answer to the last program shows that minimal models of a program are not necessarily stable, and stable models are not necessarily minimal. \textbf{But if a program is positive then its stable models are identical to its minimal models. }
+
+The comparison of the one-rule program $p \vee q$ and $p \leftarrow \neg q$ shows that two equivalent programs may have different stable models. 
+
+A \textit{choice rule} is a rule with the head of the form $A \vee \neg A$, where $A$ is an atom. In the next problem we consider programs consisting of simple choice rules. 
+
+\begin{enumerate}
+\item[\textbf{Problem 30}] Find all stable models of the programs \\
+(a) $p \vee \neg p$, \\
+(b) $p_i \vee \neg p_i, \qquad (i = 1, \ldots, n)$
+
+(a) $\bullet \qquad \emptyset$ The corresponding reduct is $p \vee \top$, thus the stable model is $\emptyset$. \\
+    $~\quad\: \bullet \qquad \{p\}$ The corresponding reduct is $p \vee \bot$, thus the stable model is $\{p\}$. \\
+    
+(b) According to (a), either $\emptyset$ or $\{p_i\}$ is a stable model of each rule. And each rule is independent. Thus, any subset of models will be a stable model. There is $2^n$ of them.  
+
+\item[\textbf{Problem 31}] (a) Find a stable model of the programs \\
+\begin{equation}
+\begin{gathered}
+ p \leftarrow \neg q  \\
+ q \leftarrow \neg r
+\end{gathered}
+\label{Prob_31}
+\end{equation}
+(b) Find a stable model of the program 
+\begin{equation*}
+ p_{i+1} \leftarrow \neg p_i \qquad (i = 1, \ldots, 100). 
+\end{equation*}
+
+\begin{enumerate}[(a)]
+\item Check each combinations, stable model:  $\{q\}$
+\item Follow the same pattern as step (a), we only need to find such a model. 
+\begin{equation*}
+ \{p_2, p_4, \ldots, p_{98}, p_{100}\}
+\end{equation*}
+\end{enumerate}
+
+\item[\textbf{Problem 32}] (a) Find all stable model of the programs 
+\begin{equation*}
+ p \leftarrow \neg p
+\end{equation*}
+and 
+\begin{gather*}
+p \leftarrow \neg q, \\
+q \leftarrow \neg p. 
+\end{gather*}
+
+For \qquad $p \leftarrow \neg p$
+\begin{itemize}
+\item $\emptyset$, it is not a model of the above program. 
+\item $\{p\}$, the corresponding reduct is $p \leftarrow \bot$, whose minimal model is $\emptyset$.
+\end{itemize}
+
+For \qquad $\begin{gathered}
+p \leftarrow \neg q, \\
+q \leftarrow \neg p. 
+\end{gathered}$
+ 
+\begin{itemize}
+\item $\emptyset$, it is not a model of the above program. 
+\item $\{p\}$, 
+the corresponding reduct is 
+$\begin{gathered}
+p \leftarrow \top, \\
+q \leftarrow \bot. 
+\end{gathered}$, 
+whose minimal model is $\{p\}$, which is the stable model of the program. 
+\item $\{q\}$, 
+the corresponding reduct is 
+$\begin{gathered}
+p \leftarrow \bot, \\
+q \leftarrow \top. 
+\end{gathered}$, 
+whose minimal model is $\{q\}$, which is the stable model of the program. 
+\item $\{p, q\}$, 
+the corresponding reduct is 
+$\begin{gathered}
+p \leftarrow \bot, \\
+q \leftarrow \bot. 
+\end{gathered}$, 
+whose minimal model is $\emptyset$. 
+\end{itemize}
+
+(b) Determine how the stable models of the last program change if we add to it the rules
+\begin{gather*}
+r \leftarrow p, \\
+r \leftarrow q. 
+\end{gather*}
+\begin{center}
+$\{p, r\}$ and $\{q, r\}$
+\end{center}
+
+\newpage
+
+\item[\textbf{Problem 33}] For any program $\Gamma$ and any constraint $\leftarrow F$, a set $M$ of atoms is a stable model of $\Gamma \cup \{\leftarrow F\}$ iff $M$ is a stable model of $\Gamma$ and does not satisfy $F$. 
+\begin{proof} Prove by chain of equivalence.\\
+$M$ is a stable model of $\Gamma$ \\
+$\iff$  (By definition of stable model) \\
+$M$ is a minimal model of $\text{reduct}_M(\Gamma \cup \{\leftarrow F\})$, which is a positive program. \\
+$\iff$ (By problem 25) \\
+$M$ is a minimal model of $\text{reduct}_M(\Gamma)$, and doesn't satisfy $\text{reduct}_M(F)$. \\
+$\iff$  (By definition of stable model) \\
+$M$ is a stable model of $\Gamma$, and doesn't satisfy $F$. 
+\end{proof}
+
+%\begin{itemize}
+%\item [$\rightarrow$] If a set $M$ of atoms is a stable model of $\Gamma \cup \{\leftarrow F\}$, then $M$ is a stable model of $\Gamma$ and does not satisfy $F$. \\
+%Suppose $\Gamma'$ is the reduct of $\Gamma$ with respect to $M$. Thus, $M$ is the minimal model of $\Gamma' \cup \{\leftarrow F\}$. According to Problem 25, $M$ is a minimal model of $\Gamma'$ and does not satisfy $F$. Thus, by definition, $M$ is a stable model of $\Gamma$. 
+%\end{itemize}
+
+\item[\textbf{Problem 34}] If $M$ is a stable model of a program $\Gamma$ then every atom from $M$ occurs in the head of one of the rules of $\Gamma$. 
+\begin{proof}
+For a stable model $M$ of $\Gamma$, suppose $\Gamma'$ is the reduct of $\Gamma$ with respect to $M$. \\
+We have $M$ is a minimal model of $\Gamma'$ where $\Gamma'$ is a positive program. \\
+According to problem 26, every atom from $M$ occurs in the head of one of the rules of $\Gamma'$. \\
+Since $\Gamma'$ is the reduct of $\Gamma$, then every atom which occurs in the head of one of the rules of $\Gamma'$ must occurs in the head of one of the rules of $\Gamma$. \\
+Thus, every atom from $M$ must also occur in the head of one of the rules of $\Gamma$. 
+\end{proof}
+\end{enumerate}
+
+For any set $\Gamma$ of clauses, by $\Gamma^*$ we denote the flat program consisting of 
+\begin{itemize}
+\item the choice rules $A \vee \neg A$ for all atoms $A$ occurring in $\Gamma$, and 
+\item the constraints $\leftarrow \overline{L_1} \wedge \cdots \wedge \overline{L_n}$ for all clauses $L_1 \vee \cdots \vee L_n$ from $\Gamma$. 
+\end{itemize}
+
+\begin{enumerate}
+\item[\textbf{Problem 35}] The stable models of $\Gamma^*$ are identical to the models of $\Gamma$. 
+\begin{proof}
+Let $\Gamma^* = \Gamma_1 \cup \Gamma_2$, where $\Gamma_1$ is the set of choice rules $A \vee \neg A$, and $\Gamma_2$ is the set of constraints $\leftarrow \overline{L_1} \wedge \cdots \wedge \overline{L_n}$. \\
+By construct, $\Gamma$ and $\Gamma^*$ use the same set of atoms. For $\forall$ stable model $M$ of $\Gamma$, by the statement of problem 30, $M$ is a stable model of $\Gamma_1$. Also, $M$ satisfies all the clauses in the form $L_1 \vee \cdots \vee L_n$ from $\Gamma$. Clearly, $M$ doesn't satisfy any of the constraints $\overline{L_1} \wedge \cdots \wedge \overline{L_n}$. Thus, $M$ does not satisfy $\Gamma_2$. By the statement of problem 33, $M$ is a stable model of $\Gamma^*$. \\
+For $\forall$ stable model $M'$ of $\Gamma^*$, $M'$ doesn't satisfy any of the constraints $\overline{L_1} \wedge \cdots \wedge \overline{L_n}$. Clearly, $M$ satisfies $L_1 \vee \cdots \vee L_n$ for all clauses in the form $L_1 \vee \cdots \vee L_n$ in $\Gamma$. Hence, $M'$ is a stable model of $\Gamma$. \\
+Thus, the stable models of $\Gamma^*$ are identical to the models of $\Gamma$. 
+
+\end{proof}
+\end{enumerate}

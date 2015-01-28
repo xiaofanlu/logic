@@ -1,0 +1,247 @@
+\section{Part 1}
+\subsection{Propositional Formulas: Syntax}
+The alphabet of propositional logic includes the propositional connectives
+\begin{equation*}
+ \top \quad \bot \quad \neg \quad \wedge \quad \vee \quad \rightarrow
+\end{equation*}
+parentheses
+\begin{equation*}
+ \left( \quad \right)
+\end{equation*}
+and other symbols, called \textit{atoms}. We assume that atoms are different from the propositional connectives and parentheses, and that there are finitely many of them. In example, we will assume that $p, q, r$ are atoms. 
+
+By a \textit{string} we understand a finite string of symbols in this alphabet. We define when a string is a \textit{(propositional) formula} recursively, as follows: 
+\begin{itemize}
+\item every atom is a formula
+\item $\top$ and $\bot$ are formulas
+\item if $F$ is a formula, then $\neg F$ is a formula
+\item if $F$ and $G$ are formulas and $\odot$ is one of the binary connectives $\wedge, \vee, \rightarrow$ then $\left( F \odot G \right)$ is a formula. 
+\end{itemize}
+
+Properties of formulas can often be proved by structural induction. In such a proof, we check that all  atoms and the 0-place connectives $\top, \bot$ have the property $P$ that we would like to establish, and that this property is preserved when a new formula is formed using a unary or binary connective. More precisely, we show that 
+\begin{itemize}
+\item every atom has property $P$.
+\item $\top$ and $\bot$ have property $P$. 
+\item if a formula $F$ has property $P$, then so does $\neg F$. 
+\item for any binary connective $\odot$, if formulas $F$ and $G$ have property $P$ then so does $\left( F \odot G \right)$. 
+\end{itemize}
+Then we can conclude that property $P$ holds for all formulas. 
+
+For instance, we can use structural induction to prove that a binary connective never occurs at the very end of a formula, as follows. Atoms, $\top$ and $\bot$ don't contain binary connectives at all. If the last character of $F$ is not a binary connective then the last character of $\neg F$ is not a binary connective. The last character of $\left( F \odot G \right)$ is not a binary connective. 
+
+\begin{enumerate}
+\item[\textbf{Problem 1}] A formula cannot contain two binary connectives next to each other. True or false?\\
+Prove by \textit{structural induction}. Define property $P$ as above. 
+\begin{itemize}
+\item There is no connectives in atoms. Thus every atom has property $P$. 
+\item There is no connectives in $\top$ and $\bot$. Thus $\top$ and $\bot$ has property $P$. 
+\item $\neg$ is an unitary connective. Thus if a formula $F$ has property $P$. Then so does $\neg F$. 
+\item A formula neither stars nor ends with a binary connective. Thus if formulas F and G don't contain two binary connective next to each other. So does $(F \odot G)$. 
+\end{itemize}
+\noindent Then we can conclude that property $P$ holds for all formulas. 
+
+\item[\textbf{Problem 2}] If a formula contains more than one character then its last character is not an atom. True or false?  False. Consider $\neg p$.  \\
+How about the first character? \qquad True. Prove by \textit{structural induction}. 
+\begin{proof}
+Define property $P$ as above. 
+\begin{itemize}
+\item An atom has only one character. 
+\item $\top$ and $\bot$ has only one character as well. 
+\item $\neg F$ does not start with an atom. 
+\item $(F \odot G)$ does not start with an atom as well.   
+\end{itemize}
+\noindent Then we can conclude that property $P$ holds for all formulas. 
+\end{proof}
+\end{enumerate}
+
+We will abbreviate formulas of the form $(F \odot G)$ by dropping the outermost parentheses in them. For any formulas $F_1, F_2, \ldots, F_n (n > 2)$
+\begin{equation*}
+F_1 \wedge F_2 \wedge \cdots \wedge F_n
+\end{equation*}
+will stand for 
+\begin{equation*}
+( \cdots (F_1 \wedge F_2) \wedge \cdots \wedge F_n). 
+\end{equation*}
+The abbreviation $F_1 \vee F_2 \vee \cdots \vee F_n$ will be understood in a similar way. The expression $F \leftrightarrow G$ will be used as shorthand for 
+\begin{equation*}
+(F \rightarrow G) \wedge ( G \rightarrow F).
+\end{equation*}
+
+
+
+\subsection{Propositional Formulas: Semantics}
+The symbols $f$ and $t$ are called \textit{truth values}. A \textit{(propositional) interpretation}, or a \textit{truth assignment}, is a function that maps atoms to truth values. 
+
+For any formula $F$ and any interpretation $I$, the truth value $F^I$ that is \textit{assigned} to $F$ by $I$ is defined recursively, as follows:
+\begin{itemize}
+\item for any atom $F$, $F^I = I(F)$,  
+\item $\top^I = t$, $\bot^I = f$, 
+\item $(\neg F)^I = \neg (F^I)$ , 
+\item $(F \odot G)^I = \odot(F^I, G^I)$ for every binary connective $\odot$.  
+\end{itemize}
+If $F^I = t$ then we say that the interpretation $I$ \textit{satisfies} $F$ and write $I \models F$. 
+
+\begin{enumerate}
+\item[\textbf{Problem 3}] For any formulas $F_1, \ldots, F_n~(n \geq 1)$ and any interpretation $I$, 
+\begin{eqnarray*}
+ (F_1 \wedge \cdots \wedge F_n)^I &= t~~ \text{iff} ~~ F_1^I = \cdots = F_n^I &= t  \\
+ (F_1 \vee \cdots \vee F_n)^I &= f~~ \text{iff} ~~ F_1^I = \cdots = F_n^I &= f 
+\end{eqnarray*}
+
+Here we only prove the first rule and the second one will be similar. \\
+\noindent
+Define: $G_n = F_1 \wedge \cdots \wedge F_n$. \\
+$\bullet$ When $n = 1$, $G_1^I = F_1^I$, thus $G_1^I = t \iff F_1^I = t$  \\
+$\bullet$ Let $k \in N$ and suppose $G_k^I = t \iff F_1^I = \cdots = F_k^I = t$, then
+\begin{equation*}
+    G_{k+1}^I = \left(G_k \wedge F_{k+1} \right)^I = \wedge \left(G_k^I, F_{k+1}^I \right)
+\end{equation*}
+\vspace{-30pt}
+\begin{eqnarray*}
+    G_{k+1}^I = t &\iff &G_k^I = t \And F_{k+1}^I = t  \\
+    G_{k+1}^I = t &\iff & F_1^I = \cdots = F_k^I = F_{k+1}^I = t
+\end{eqnarray*}
+\hspace{10pt}Thus, the induction hypothesis holds true for $n = k+1$. \\
+$\bullet$ By the principle of induction, $G_n^I = t \iff F_1^I = \cdots = F_n^I = t$, which is \\
+\begin{equation*}
+(F_1 \wedge \cdots \wedge F_n)^I = t~~ \text{iff} ~~ F_1^I = \cdots = F_n^I = t
+\end{equation*}
+
+\item[\textbf{Problem 4}] For any interpretation $I$, there exists a formula $F$ such that $I$ is the only interpretation satisfying $F$.  [Existence + Uniqueness]
+\begin{proof}
+For atom $p_i : 1 \leq i \leq n$, define 
+$L_i=\left\{
+    \begin{array}{c l}      
+    p_i & \text{if } p_i^I = t\\
+    \neg p_i & \text{if } p_i^I = f
+\end{array}\right.$. \\
+Thus, by \textbf{problem 3}, $I$ satisfies $F$ where $F = L_1 \wedge \cdots \wedge L_n$,  \\
+For any other interpretation $I'$. There must $\exists k \in N$ that $p_k^{I} = \neg p_k^{I'}$. Thus, $L_k^{I'} = f$, $F^{I'} = f$. So $I'$ doesn't satisfy $F$. 
+\end{proof}
+
+\item[\textbf{Problem 5}] For any set $S$ of interpretations there exists a formula $F$ such that for all interpretation $I$, $I \models F ~~\text{iff}~~ I \in S$. \\
+Student Solution: \\
+If set S is empty, $F = \bot$. Else, let $S = \{ I_i :1 \leq i \leq n \}$ be a set of interpretation. For each $I_i$, let $F_i$, s.t. $I_i$ is the only interpretation satisfying $F_i$ (by Problem 4).  \\
+If define $F = (F_1 \vee \cdots \vee F_n)$, since $F_i^{I_i} = t, F^{I_i} = t$. Thus, $I \in S \Rightarrow I \vdash F$. \\
+Now, suppose $I' \notin S$, this is to say, $\forall i, F_i^{I'} = f$. Thus,  $I \notin S \Rightarrow I \not\models F$, this is the same as $I \models F    \Rightarrow I \in S$ . 
+Thus, $I \in S \iff I \vdash F$.\\
+
+\begin{proof}
+$I \models F$ \\
+$~\quad \iff$  \{Construction of F \}\\
+    $~\qquad I \models F_1 \vee \cdots \vee F_n $  \\
+$~\qquad \iff$   \{by Problem 3\}  \\ 
+    $~\qquad \quad$for some $i$, $I \models F_i$  \\
+ $~\qquad \quad \iff$   \{by Problem 4, choice of $F_i$\}  \\ 
+    $~\qquad \qquad$for some $i$, $I = I_i$  \\
+ $~\qquad \qquad \iff$   \{set notation \}  \\ 
+ $~\qquad \qquad \quad I \in \{  I_i :1 \leq i \leq n\}$   \\ 
+\end{proof}
+\end{enumerate}
+
+\subsection{Tautologies and Equivalence}
+A propositional formula F is a \textit{tautology} if every interpretation satisfies $F$.
+
+\begin{enumerate}
+\item[\textbf{Problem 6}] Determine which of the formulas 
+\begin{gather*}
+(p \rightarrow q) \vee  (q \rightarrow p) \\
+((p \rightarrow q) \rightarrow  p) \rightarrow p \\
+((p \rightarrow q) \rightarrow r) \rightarrow  ((p \rightarrow q) \rightarrow (p \rightarrow r ))  
+\end{gather*}
+are tautologies.     
+\begin{table}[H]
+\begin{center}
+    \begin{tabular}{c c c c}
+    \hline
+    p & q & 1 & 2 \\ \hline
+    f & f & t   & t   \\
+    f & t & t   & t   \\
+    t & f & t   & t   \\
+    t & t & t   & t   \\ \hline
+    \end{tabular}
+\end{center}
+\end{table}
+\end{enumerate}
+
+\noindent A formula $F$ is \textbf{equivalent} to a formula $G$ (symbolically, $F \sim G$) if, for every interpretation $I$, $F^I = G^I$. 
+
+\begin{enumerate}
+\item[\textbf{Problem 7}] 
+(a) We know that conjunction and disjunction are associative: 
+\begin{gather*}
+(F \wedge G) \wedge H \sim F \wedge (G \wedge H) \\
+(F \vee G) \vee H \sim F \vee (G \vee H)
+\end{gather*}
+Determine whether equivalence has a similar property: 
+\begin{gather*}
+ (F \leftrightarrow G) \leftrightarrow H \sim F \leftrightarrow (G \leftrightarrow H)
+\end{gather*}
+Yes, check the corresponding truth table. 
+
+(b) We know that implication distributes over conjunction: 
+\begin{gather*}
+ F \rightarrow (G \wedge H) \sim (F \rightarrow G) \wedge (F \rightarrow H) 
+\end{gather*}
+Find a similar transformation for $(F \vee G) \rightarrow H$. 
+\begin{eqnarray*}
+(F \vee G) \rightarrow H 
+                         \sim & \neg H \rightarrow \neg(F \vee G) \\
+                         \sim & \neg H \rightarrow (\neg F \wedge \neg G) \\
+                         \sim & (\neg H \rightarrow \neg F) \wedge (\neg H \rightarrow \neg G) \\  
+                         \sim & (F \rightarrow H) \wedge (G \rightarrow H)
+\end{eqnarray*}
+
+\item[\textbf{Problem 8}] We know that conjunction distributes over disjunction and that disjunction distributes over conjunction: 
+\begin{gather*}
+ F \wedge (G \vee H) \sim (F \wedge G) \vee (F \wedge H) \\
+ F \vee (G \wedge H) \sim (F \vee G) \wedge (F \vee H)
+\end{gather*}
+Do these connectives distribute over equivalence?
+\begin{eqnarray*}
+F \wedge (G \leftrightarrow H) \not \sim (F \wedge G) \leftrightarrow (F \wedge H)  \\
+F \vee (G \leftrightarrow H) \sim (F \vee G) \leftrightarrow (F \vee H)
+\end{eqnarray*}
+
+
+
+\item[\textbf{Problem 9}] De Morgan's laws
+\begin{gather*}
+ \neg ( F \wedge G) \sim \neg F \vee \neg G \\
+ \neg ( F \vee G) \sim \neg F \wedge \neg G
+\end{gather*}
+show how to transform a formula of the form $\neg (F \odot G)$ when $\odot$ is $\wedge$ or $\vee$. Find similar transformations for the cases when $\odot$ is $\rightarrow$ or $\leftrightarrow$. (use truth table)
+ \begin{gather*}
+     \neg (F \rightarrow G) \sim F \wedge \neg G   \\
+     \neg (F \leftrightarrow G) \sim \left\{
+        \begin{array}{c}      
+        F \leftrightarrow \neg G\\
+        \neg F \leftrightarrow G
+        \end{array}\right.
+ \end{gather*}
+
+\item[\textbf{Problem 10}] To simplify a formula means to find an equivalent formula that is shorter. Simplify the formulas: 
+\begin{gather*} 
+ F \vee ( F \wedge G) \sim F \\
+ F \wedge (F \vee G) \sim F \\
+ F \vee (\neg F \wedge G) \sim F \vee G
+\end{gather*}
+ \end{enumerate}
+ 
+\subsection{Quiz 1}
+A propositional formula contains 100 occurrences of atoms and zero-place connectives. How many occurrence of binary connectives does it have? \\
+
+\noindent
+It has 99 occurrence of binary connectives. \\
+Claim: A propositional formula with $n$ occurrences of atoms and zero-place connectives has $n - 1$ occurrences of binary connectives. 
+\begin{proof}
+\begin{itemize}
+\item For every atom, it contains 1 occurrence of atom and 0 occurrences of binary connective. 
+\item For $\top$ and $\bot$, it contains 1 occurrence of atom and 0 occurrences of binary connective. 
+\item If a formula F with $n$ occurrences of atoms and zero-place connectives has $n - 1$ occurrences of binary connectives, then $\neg F$ has $n$ occurrences of atoms and zero-place connectives has $n - 1$ occurrences of binary connectives. This is because that there is no additional binary connectives comparing $\neg F$ with $F$. 
+\item If formula $F$ and $G$ has the above property, this is to say, $F$ with $n_F$ occurrences of atoms and zero-place connectives has $n_F - 1$ occurrences of binary connectives. $G$ with $n_G$ occurrences of atoms and zero-place connectives has $n_G - 1$ occurrences of binary connectives. Then for $(F \odot G)$, it contains $(n_F + n_G$ occurrences of atoms and zero-place connectives, and $(n_F - 1) + (n_G - 1) + 1 = n_F + n_G - 1$ occurrences of binary connectives. Then the above property also holds for $(F \odot G)$. 
+\end{itemize}
+Thus, by structural induction, the property holds for any propositional formula. 
+\end{proof} 
+ 
+ \newpage

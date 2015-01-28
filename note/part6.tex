@@ -1,0 +1,789 @@
+\section{Part 8}
+\subsection{Predicate Formulas: Syntax}
+
+The alphabet of predicate logic consists of:
+\begin{itemize}
+ \item symbols called \textit{object constants}, 
+ \item symbols called \textit{predicate constants}, with a positive integer, called the \textit{arity}, assigned to each of them. 
+ \item \textit{object variable} $x, y, z, x_1, y_1, z_1, x_2, y_2, z_2, \ldots$, \item the propositional connectives,
+ \item the \textit{universal quantifier} $\forall$ and the existential quantifier $\exists$,
+ \item the parentheses and the comma.
+\end{itemize}
+In this part of the course, a \textit{string} is a finite string of symbols in the alphabet of predicate logic. 
+
+A \textit{term} is an object constant or an object variable. A string is called an \textit{atomic formula} if it has the form 
+\begin{equation*}
+P(t_1, \ldots, t_n)
+\end{equation*}
+where $P$ is a predicate constant of arity $n$ and $t_1, \ldots, t_n$ are terms. 
+
+We define when a string is a \textit{(predicate) formula} recursively, as follows:
+\begin{itemize}
+\item every atomic formula is a formula, 
+\item $\top$ and $\bot$ are formulas, 
+\item if $F$ is a formula then $\neg F$ is a formula,  
+\item for any binary connective $\odot$, if $F$ are $G$ are formulas then $(F \odot G)$ is a formula, 
+\item for any quantifier $K$ and any variable $v$, if $F$ is a formula then $KvF$ is a formula.  
+\end{itemize}
+
+When we write predicate formulas, we will use the abbreviations introduced in Part 1 of these lecture notes. A string of the form $\forall v_1 \cdots \forall v_n$ will be written as $\forall v_1 \cdots v_n$ and similarly for the existential quantifier. 
+
+An occurrence of a variable $v$ in a formula $F$ is bound if it belongs to a part of $F$ that has the form $KvG$; otherwise it is free. We say that a variable $v$ is \textit{free (bound)} in $F$ if at least one one occurrence of $v$ in $F$ is free(bound). A formula without free variable is called a \textit{closed formula}, or a \textit{sentence}. 
+
+In the following problems, represent the given conditions by formulas that may contain the object constant $a$ and the ternary predicate constants $Sum$ and $Prod$. Think of the object variables as ranging over all nonnegative integers, and interpret the object and predicate constants as follows:
+\begin{itemize}
+\item $a$ represents 0, 
+\item $Sum(x, y, z)$ represents the condition $x + y = z$, 
+\item $Prod(x, y, z)$ represents the condition $xy = z$, 
+\end{itemize}
+
+\begin{enumerate}
+\item[\textbf{Problem 52}] 
+\begin{enumerate}[(a)]
+\item $x = y$   $\qquad \Rightarrow \qquad $ $Sum(x, a, y)$. 
+\item $x = 0$   $\qquad \Rightarrow \qquad $ $Sum(x, a, a) \quad Sum(x, x, x)$. 
+\item $x = 1$   $\qquad \Rightarrow \qquad $ $\forall y \:Prod(x, y, y)$. \\
+                       $\neg Sum(x, x, x) \wedge \forall z(\neg Sum(z, z, z) \rightarrow \exists y \: Sum(x, y, z))$
+\end{enumerate}
+
+\item[\textbf{Problem 53}] 
+\begin{enumerate}[(a)]
+\item $x \leq y$ $\qquad \Rightarrow \qquad $ $ \exists z \: Sum(x, z, y)$. 
+\item $x < y$    $\qquad \Rightarrow \qquad $ $ \exists z \: (\neg Sum(z, z, z) \wedge Sum(x, z, y))$.
+\item $x + 1 < y$   $\quad \Rightarrow \qquad $ $ \exists z \: (\neg Prod(z, z, z) \wedge Sum(x, z, y)$. 
+\end{enumerate}
+
+\item[\textbf{Problem 54}] 
+\begin{enumerate}[(a)]
+\item $x$ is even number; \\
+%$ \exists y \forall z Prod (y, z, z) \wedge \exists x_0 Sum(y, y, x_0) \wedge \exists z \: Prod(z, x_0, x)$.
+$\exists y \: Sum(y, y, x)$
+\item the sum of any two odd numbers is even; \\
+%$\forall x, y, x_0, y_0 \: \neg Prod(x_0, 2, x)  \neg Prod(y_0, 2, y)$.
+$\forall x_1 x_2 \; (\neg \exists y \; Sum(y, y, x_1) \wedge \neg \exists y \; Sum(y, y, x_2)) \rightarrow \exists z \; (Sum (x_1, x_2, z) \wedge \exists y \; Sum(y, y, z))$ \\
+$\forall x_1 x_2 \; (\neg \exists y \; Sum(y, y, x_1) \wedge \neg \exists y \; Sum(y, y, x_2)) \rightarrow \forall z \; (Sum (x_1, x_2, z) \rightarrow \exists y \; Sum(y, y, z))$
+
+
+\item addition is commutative. \\
+$\forall xy \; \exists z \; (Sum(x, y, z) \wedge Sum(y, x, z))$
+\end{enumerate}
+
+\item[\textbf{Problem 55}] Number $x$ can be represented as the sum of two complete squares. \\
+$\exists y_1 y_2 \; (\exists z \; Prod(z, z, y_1) \wedge \exists z \; Prod(z, z, y_2) \wedge Sum(y_1, y_2, x))$
+
+\item[\textbf{Problem 56}] Number $x$ is prime. \\
+%$\forall y, z \: \neg Prod(y, z, x)$\\
+$\neg \exists y (\neg (\forall z Prod(y,z,z)) \wedge \neg Sum(y,a,x) \wedge \exists z (Prod(y, z , x))) \wedge \neg Prod(x, x, x)$
+\end{enumerate}
+
+\newpage
+\subsection{Predicate Formulas: Semantics}
+The semantics of propositional formulas described in Part 1 of these lecture notes defines which truth value $F^I$ is assigned to a propositional formula $F$ by an interpretation $I$. Our goal is to extend this definition to predicate logic.
+
+First we need to adapt the definition of an interpretation to predicate formulas. In predicate logic, an \textit{interpretation} $I$ consists of
+\begin{itemize}
+\item a non-empty set $|I|$, called the \textit{universe} of $I$,  
+\item for every object constant $c$, an element $c^I$ of $|I|$, 
+\item for every predicate constant $P$, a function $P^I$ from $|I|^n$ to $\{f, t\}$, where $n$ is the arity of $P$. 
+\end{itemize}
+
+For instance, the sentence before Problem 52 can be viewed as the definition of the interpretation $I$ such that
+\begin{equation}
+\label{inter1}
+\begin{gathered}
+|I| = \mathbf{N}, \\
+a^I = 0, \\
+Sum^I(\xi, \eta, \zeta) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi + \eta = \zeta, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right. \\
+Prod^I(\xi, \eta, \zeta) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi \eta = \zeta, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right.       
+\end{gathered}
+\end{equation}
+$(\xi, \eta, \zeta \in \mathbf{N})$. 
+
+The result of the \textit{substitution} of a term $t$ for a variable $v$ in a formula $F$ is the formula $F_t^v$ obtained from $F$ by replacing each free occurrence of $v$ by $t$. 
+
+Let $I$ be an interpretation. For any element $\xi$ of its universe $|I|$, select a new object constant $\xi^*$, called the \textit{name} of $\xi$. The interpretation $I$ can be extended to the new object constants by defining 
+\begin{equation*}
+(\xi^*)^I = \xi
+\end{equation*}
+for all $\xi \in |I|$. 
+
+We define the truth value $F^I$ that is \textit{assgined} to $F$ by $I$ for a sentence $F$ that may contain names recursively, as follows:
+
+\begin{itemize}
+\item $P(t_1, \ldots, t_n)^I = P^I(t_1^I, \ldots, t_n^I)$,
+\item $\top^I = \mathrm{t}$, $\bot^I = \mathrm{f}$, 
+\item $(\neg F)^I = \neg (F^I)$ , 
+\item $(F \odot G)^I = \odot(F^I, G^I)$ for every binary connective $\odot$,
+\item $(\forall vF)^I = \mathrm{t}$ iff for all $\xi \in |I|, (F^v_{\xi^*})^I = \mathrm{t}$,
+\item $(\exists vF)^I = \mathrm{t}$ iff for some $\xi \in |I|, (F^v_{\xi^*})^I = \mathrm{t}$.
+\end{itemize}
+
+As in propositional logic, we say that $I$ \textit{satisfies} $F$, and write $I \models F$ if $F^I = \mathrm{t}$. 
+
+
+\begin{enumerate}
+\item[\textbf{Problem 57}] Determine which of the sentences
+\begin{enumerate}[(i)]
+    \item $\exists x Sum(x, x, x)$,
+    \item $\exists x \neg Sum(x, x, x)$, 
+    \item $\forall x (Sum(x,x,x) \rightarrow \forall y Sum(x, y, y))$
+\end{enumerate}
+are satisfied by interpretation \eqref{inter1} . 
+
+
+\begin{enumerate}[(i)]
+    \item $\exists x Sum(x, x, x)$,  \\
+       For $0 \in |I|, (Sum(x, x, x)^{x}_{0^*})^I = (Sum(0^*, 0^*, 0^*))^I$ \\
+               $~$\hspace{51.4mm}                      $= Sum^I({0^*}^I,{0^*}^I,{0^*}^I) = Sum^I(0,0,0) = \mathrm{t}$ 
+    \\
+    \item $\exists x \neg Sum(x, x, x)$, \\
+    For $1 \in |I|, (\neg Sum(x, x, x)^x_{1^*})^I = (\neg Sum(1^*, 1^*, 1^*))^I$ \\
+             $~$\hspace{55.4mm}$ =\neg Sum^I({1^*}^I,{1^*}^I,{1^*}^I) = \neg Sum^I(1,1,1) = \mathrm{t}$ 
+    \\
+    \item $\forall x (Sum(x,x,x) \rightarrow \forall y Sum(x, y, y))$\\
+    $(Sum(n^*, n^*, n^*))^I = Sum^I({n^*}^I,{n^*}^I,{n^*}^I) = Sum^I(n, n, n) = 
+    \left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  n = 0, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right.    $
+    We only care about $x = 0$, \\
+    $(Sum(0^*, m^*, m^*))^I = Sum^I({0^*}^I,{m^*}^I,{m^*}^I) = Sum^I(0, m, m) = \mathrm{t}$  \\
+    Thus, $[\forall y Sum(0^*, y, y)]^I = t$, for all $m = |I|$. 
+\end{enumerate}
+\end{enumerate}
+
+
+\newpage
+
+\subsection{Logical Validity and Entailment}
+
+In predicate logic, we say about a sentence that it is \textit{logically valid} if it is satisfied by all interpretations. 
+
+\begin{enumerate}
+\item[\textbf{Problem 58}] Determine whether the sentences
+\begin{eqnarray}
+    \label{58_1}
+   \exists x (P(x) \wedge Q(x)) \rightarrow (\exists x P(x) \wedge \exists x Q(x)), \\
+    \label{58_2}
+   (\exists x P(x) \wedge \exists x Q(x)) \rightarrow \exists x (P(x) \wedge Q(x))
+\end{eqnarray}
+are logically valid. 
+\begin{itemize}
+\item \eqref{58_1} is logically valid. \\
+For any interpretation $I$, we only need care about the case when $( \exists x (P(x) \wedge Q(x)))^I = \mathrm{t}$, otherwise, the whole sentence is $\mathrm{t}$. We have, for some $\xi \in |I|$, 
+\begin{eqnarray*}
+(((P(x) \wedge Q(x)))^x_{\xi^*})^I = & (P(\xi^*) \wedge Q(\xi^*))^I \\
+                                   = & \wedge (P^I(\xi^{*I}), Q^I(\xi^{*I})) \\
+                                   = & \wedge (P^I(\xi), Q^I(\xi))
+                                   = & \mathrm{t}
+\end{eqnarray*}
+Thus, $P^I(\xi) = Q^I(\xi) = \mathrm{t}$. This is to say: \\
+$(P(x)^x_{\xi^*})^I = P^I(\xi^{*I}) = P^I(\xi) = \mathrm{t}$ $\qquad$
+$(Q(x)^x_{\xi^*})^I = Q^I(\xi^{*I}) = Q^I(\xi) = \mathrm{t}$ \\
+which means $(\exists x P(x))^I = (\exists x Q(x))^I = \mathrm{t}$. Thus, 
+\begin{equation*}
+(\exists x P(x) \wedge \exists x Q(x))^I = \mathrm{t}
+\end{equation*}
+This is to say, \eqref{58_1} is satisfied by all interpretations. Thus, it is logically valid. \\
+We can also prove it by natural deduction. 
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\exists x (P(x) \wedge Q(x)) $                                  & $\qquad$& \\
+\xfl{A1 \Rightarrow \exists x (P(x) \wedge Q(x)) }                    {axiom}
+A2. & $P(x) \wedge Q(x) $                                              & $\qquad$& \\
+\xfl{A2 \Rightarrow P(x) \wedge Q(x) }                                {axiom}
+\xfl{A2 \Rightarrow P(x) }                                            {$(\wedge E), \xfp{c}$}
+\xfl{A2 \Rightarrow \exists x P(x) }                                  {$(\exists I), \xfp{c}$}
+\xfl{A2 \Rightarrow Q(x) }                                            {$(\wedge E), 2$}
+\xfl{A2 \Rightarrow \exists x Q(x) }                                  {$(\exists I), \xfp{c}$}
+\xfl{A2 \Rightarrow \exists x P(x) \wedge \exists x Q(x) }            {$(\wedge I), 4, \xfp{c}$}
+\xfl{A1 \Rightarrow \exists x P(x) \wedge \exists x Q(x) }            {$(\exists E), 1, \xfp{c}$}
+\xfl{\Rightarrow \exists x (P(x) \wedge Q(x)) \rightarrow (\exists x P(x) \wedge \exists x Q(x))}     
+                                                                      {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\item \eqref{58_2} is not logically valid. \\
+We can find a counter example. Define interpretation $I$ as:
+\begin{equation*}
+\begin{gathered}
+|I| = \{0, 1\}, \\
+P^I(\xi) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi = 0, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right. \\
+Q^I(\xi) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi = 1, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right.       
+\end{gathered}
+\end{equation*}
+Clearly, 
+\begin{itemize}
+\item \hspace{2cm} for $0 \in |I|, (P(x)_{0*}^x)^I = P^I(0^{*I}) = P^I(0) = \mathrm{t}$
+\item \hspace{2cm} for $1 \in |I|, (Q(x)_{1*}^x)^I = Q^I(1^{*I}) = Q^I(1) = \mathrm{t}$
+\end{itemize}
+Thus, $(\exists x P(x) \wedge \exists x Q(x))^I = \mathrm{t}$. However, $\exists x (P(x) \wedge Q(x))$ can not be satisfied by $I$. 
+\begin{itemize}
+\item for $0 \in |I|, ((P(x) \wedge Q(x))_{0*}^x)^I = \wedge (P^I(0^{*I}), Q^I(0^{*I}))$ \\
+           $~$\hspace{53.2mm} $= \wedge (P^I(0), Q^I(0)) = \wedge (\mathrm{t}, \mathrm{f}) = \mathrm{f}$ 
+\item for $1 \in |I|, ((P(x) \wedge Q(x))_{1*}^x)^I= \wedge (P^I(1^{*I}), Q^I(1^{*I}))$ \\
+           $~$\hspace{53.2mm} $= \wedge (P^I(1), Q^I(1)) = \wedge (\mathrm{f}, \mathrm{t}) = \mathrm{f}$ 
+\end{itemize}
+This is to say, the above interpretation fails to satisfy \eqref{58_2}. In other word, \eqref{58_2} is not logical valid. 
+\end{itemize}
+\end{enumerate}
+
+\noindent
+The \textit{univeral closure} of a formula $F$ is the sentence $\forall v_1, \cdots, v_n F$, where $v_1, \cdots, v_n$ are all free variables of $F$. About a formula with free variables we say that it is \textit{logically valid} if its universal closure is logically valid. 
+
+\begin{enumerate}
+\item[\textbf{Problem 59}] For each of the formulas 
+\begin{eqnarray}
+     \label{59_1}
+     P(x) \rightarrow \exists x P(x) \\ 
+     \label{59_2}
+     P(x) \rightarrow \forall x P(x) 
+\end{eqnarray}
+determine whether it is logically valid. 
+\end{enumerate}
+\begin{itemize}
+\item \eqref{59_1} is logically valid. \\
+\item \eqref{59_2} is not logically valid. \\
+\end{itemize}
+
+\vspace{6cm}
+
+\noindent
+A formula $F$ is \textit{equivalent} to a formula $G$ if the formula $F \leftrightarrow G$ is logically valid. 
+
+\begin{enumerate}
+\item[\textbf{Problem 60}] Determine whether the formula 
+\begin{equation*}
+      \forall x \exists y P(x, y)
+\end{equation*}
+is equivalent to 
+\begin{equation*}
+      \exists y \forall x P(x, y)
+\end{equation*}
+\textit{We need to determine whether $\forall x \exists y P(x, y) \leftrightarrow  \exists y \forall x P(x, y)$ is logically valid or not.} 
+\begin{itemize}
+\item $\forall x \exists y P(x, y) \rightarrow  \exists y \forall x P(x, y)$ is not logically valid.
+We can find a counter example. Define interpretation $I$ as:
+\begin{equation*}
+\begin{gathered}
+|I| = \{0, 1\}, \\
+P^I(\xi, \eta) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi = \eta, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right.     
+\end{gathered}
+\end{equation*} 
+There are only two elements $0$ and $1$ in the universe $|I|$.
+\begin{itemize}
+\item for $0 \in |I|, \exists y (P(x, y)_{0*}^x)^I = (\exists y P(0^*, y))^I$, we can find $0 \in |I|$ that \\
+$(P(0^*, y)_{0*}^y)^I = P^I(0^{*I}, 0^{*I}) = P^I(0, 0) = \mathrm{t}$,
+\item for $1 \in |I|, \exists y (P(x, y)_{1*}^x)^I = (\exists y P(1^*, y))^I$, we can find $1 \in |I|$ that \\
+$(P(1^*, y)_{1*}^y)^I = P^I(1^{*I}, 1^{*I}) = P^I(1, 1) = \mathrm{t}$. 
+\end{itemize}
+However, the above interpretation can not satisfy $\exists y \forall x P(x, y)$. 
+\begin{itemize}
+\item for $0 \in |I|, \forall x (P(x, y)_{0*}^y)^I = (\forall x P(x, 0^*))^I$, we can find $1 \in |I|$
+that  \\
+$(P(x, 0^*)_{1*}^x)^I = P^I(1^{*I}, 0^{*I}) = P^I(1, 0) = \mathrm{f}$,
+\item for $1 \in |I|, \forall x (P(x, y)_{1*}^y)^I = (\forall x P(x, 1^*))^I$, we can find $0 \in |I|$  that \\
+$(P(x, 1^*)_{0*}^x)^I = P^I(0^{*I}, 1^{*I}) = P^I(0, 1) = \mathrm{f}$. 
+\end{itemize}
+
+\item $\exists y \forall x P(x, y) \rightarrow  \forall x \exists y P(x, y)$ is logically valid.
+We can prove by natural deduction.
+\setcounter{c}{0}
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\exists y \forall x P(x, y)$                                   & $\qquad$& \\
+\xfl{A1 \Rightarrow \exists y \forall x P(x, y) }                     {axiom}
+A2. & $\forall x P(x, y)$                                              & $\qquad$& \\
+\xfl{A2 \Rightarrow \forall x P(x, y) }                                {axiom}
+\xfl{A2 \Rightarrow P(x, y)}                                          {$(\forall E), \xfp{c}$}
+\xfl{A2 \Rightarrow \exists y P(x, y)}                                {$(\exists I), \xfp{c}$}
+\xfl{A2 \Rightarrow \forall x \exists y P(x, y)}                      {$(\forall I), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x \exists y P(x, y)}                      {$(\exists E), 1, \xfp{c}$}
+\xfl{\Rightarrow \exists y \forall x P(x, y) \rightarrow  \forall x \exists y P(x, y)}     
+                                                                      {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}                                                                          
+\end{itemize}
+\end{enumerate}
+
+
+\newpage
+
+We say that a set $\Gamma$ of sentences \textit{entails} a sentence $F$, or that $F$ is \textit{logical consequence} of $\Gamma$, if every interpretation that satisfies all sentences in $\Gamma$ satisfies $F$. 
+
+\begin{enumerate}
+\item[\textbf{Problem 61}]  Determine whether 
+\begin{equation}
+      \label{61_1}
+      \exists x P(x, x) 
+\end{equation}
+is a logical consequence of the sentence 
+\begin{eqnarray}
+       \label{61_2}
+       &\forall x \exists y P(x, y)\\
+       \label{61_3}
+       & \forall xyz((P(x, y) \wedge P(y,z)) \rightarrow P(x, z)). 
+\end{eqnarray}
+
+$~$\\
+We can find a counter example. Define interpretation $I$ as:
+\begin{equation*}
+\begin{gathered}
+|I| = \mathbb{N}, \\
+P^I(\xi, \eta) = 
+\left\{
+        \begin{array}{ccc}      
+        &\mathrm{t}, \quad &\text{if }  \xi < \eta, \\
+        &\mathrm{f}, \quad &\text{otherwise}
+        \end{array}\right.     
+\end{gathered}
+\end{equation*} 
+$I$ satisfies \eqref{61_2} because for all $\xi = n \in |I|$, we can always have $\eta = n + 1$, where \begin{center}
+$((P(x, y)_{\xi^*}^x)_{\eta^*}^y)^I  = P^I(\xi^{*I}, \eta^{*I}) = P^I(n, n + 1) = \mathrm{t}$. 
+\end{center}
+
+We can show that $I$ also satisfies \eqref{61_3} as follow: \\
+We only care about the case where 
+$(P(\xi^*, \eta^*) \wedge P(\eta^*, \zeta^*))^I = \mathrm{t}$. \\
+From definition, we have:
+\begin{eqnarray*}
+(P(\xi^*, \eta^*) \wedge P(\eta^*, \zeta^*))^I  
+                           = & \wedge (P^I(\xi^{*I}, \eta^{*I}),  P^I(\eta^{*I}, \zeta^{*I}))\\
+                           =  & \wedge (P^I(\xi, \eta),  P^I(\eta, \zeta)) = \mathrm{t}
+\end{eqnarray*}
+We have
+\begin{equation*}
+\left.
+        \begin{array}{ccc}      
+        P^I(\xi, \eta) = \mathrm{t} &  \Rightarrow  &  \xi < \eta  \\
+        P^I(\eta, \zeta) = \mathrm{t} &  \Rightarrow  &  \eta < \zeta 
+        \end{array}\right\} \Rightarrow
+            \xi < \eta < \zeta  
+\end{equation*}
+Clearly, 
+\begin{equation*}
+(P(\xi^*, \zeta^*))^I = P^I(\xi^{*I}, \zeta^{*I}) = P^I(\xi, \zeta) = \mathrm{t}
+\end{equation*}
+
+However, $I$ doesn't satisfy \eqref{61_1}. 
+\begin{equation*}
+(P(\xi^*, \xi^*))^I = P^I(\xi^{*I}, \xi^{*I}) = P^I(\xi, \xi) = \mathrm{f}
+\end{equation*}
+
+
+\end{enumerate}
+\newpage
+
+\subsection{Introduction and Elimination Rules for Quantifiers}
+We say that a term $t$ is \textit{substitutable} for a variable $v$ in a formula $F$ if 
+\begin{itemize}
+\item $t$ is a constant, or 
+\item $t$ is a variable $w$, and no part of $F$ of the form $KwG$ contains an occurrence of $v$ which is free in $F$. 
+\end{itemize}
+\noindent
+Here are the additional inference rules of predicate logic:
+
+\begin{center}
+\begin{minipage}[t]{0.3\textwidth}
+\begin{equation*}
+(\forall I) \quad \frac{ \Gamma \Rightarrow F}{\Gamma \Rightarrow \forall v F }
+\end{equation*} \\
+where $v$ is not a free variable of any formula in $\Gamma$. \\
+\begin{equation*}
+(\exists I) \quad \frac{ \Gamma \Rightarrow F_t^v}{\Gamma \Rightarrow \exists v F}
+\end{equation*}\\
+where $t$ is substitutable for $v$ in $F$
+\end{minipage}
+\begin{minipage}[t]{0.1\textwidth}
+$\quad$
+\end{minipage}
+\begin{minipage}[t]{0.3\textwidth}
+\begin{equation*}
+(\forall E) \quad \frac{ \Gamma \Rightarrow \forall vF }{\Gamma \Rightarrow F_t^v}
+\end{equation*} \\
+where $t$ is substitutable for $v$ in $F$ \\
+\begin{equation*}
+(\exists E) \quad \frac{ \Gamma \Rightarrow \exists vF \quad \Delta, F \Rightarrow \Sigma }
+{\Gamma , \Delta \Rightarrow \Sigma}
+\end{equation*} \\
+where $v$ is not a free variable of any formula in $\Delta, \Sigma$
+\end{minipage}
+\end{center}
+
+\noindent
+Prove the given formulas in the natural deduction system. \\\\
+\begin{enumerate}
+\setcounter{c}{0}
+\item[\textbf{Problem 62}] $(P(a) \wedge \forall x (P(x) \rightarrow Q(x))) \rightarrow Q(a)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $P(a) \wedge \forall x (P(x) \rightarrow Q(x))$        & $\qquad$ & \\
+\xfl{A1 \Rightarrow P(a) \wedge \forall x (P(x) \rightarrow Q(x))}          {axiom}
+\xfl{A1 \Rightarrow p(a)}                                                   {$(\wedge E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x (P(x) \rightarrow Q(x))}                      {$(\wedge E), \xfp{c}$}
+\xfl{A1 \Rightarrow P(a) \rightarrow Q(a)}                                  {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow Q(a)}                                               {$(\rightarrow E), 2, \xfp{c}$}
+\xfl{\Rightarrow (P(a) \wedge \forall x (P(x) \rightarrow Q(x))) \rightarrow Q(a)}                                               {$(\rightarrow I), \xfp{c}$}
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 63}] $P(a) \rightarrow \neg \forall x \neg P(x)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $P(a) $                                            & $\qquad$ & \\
+\xfl{A1 \Rightarrow P(a)}                                {axiom}
+A2. & $\forall x \neg P(x) $                             & $\qquad$ & \\
+\xfl{A2 \Rightarrow \forall x \neg P(x)}                 {axiom}
+\xfl{A2 \Rightarrow \neg P(a)}                           {$(\forall E), \xfp{c}$}
+\xfl{A1,A2 \Rightarrow \bot}                             {$(\neg E), 1, \xfp{c}$}
+\xfl{A1 \Rightarrow \neg \forall x \neg P(x)}            {$(\neg I), \xfp{c}$}
+\xfl{\Rightarrow P(a) \rightarrow \neg \forall x \neg P(x)}     {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 64}] $\forall xy P(x,y) \rightarrow \forall x P(x, x)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\forall xy P(x,y) $                                  & $\qquad$& \\
+\xfl{A1 \Rightarrow \forall x \forall y P(x,y) }            {axiom}
+\xfl{A1 \Rightarrow \forall y P(x,y) }                      {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow  P(x, x) }                              {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x  P(x,x) }                     {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \forall xy P(x,y) \rightarrow \forall x P(x, x)}     {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+
+\setcounter{c}{0}
+\item[\textbf{Problem 65}] $\forall x P(x) \leftrightarrow \forall y P(y)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\forall x P(x) $                               & $\qquad$ & \\
+\xfl{A1 \Rightarrow \forall x P(x) }                  {axiom}
+\xfl{A1 \Rightarrow P(y) }                            {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall y P(y) }                  {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \forall x P(x) \rightarrow  \forall y P(y) }{$(\rightarrow I), \xfp{c}$}
+\\
+A2. & $\forall y P(y) $                               & $\qquad$ & \\
+\xfl{A1 \Rightarrow \forall y P(y) }                  {axiom}
+\xfl{A1 \Rightarrow P(x) }                            {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x P(x) }                  {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \forall y P(y) \rightarrow  \forall x P(x) }{$(\rightarrow I), \xfp{c}$}
+\\
+\xfl{\Rightarrow \forall x P(x) \leftrightarrow  \forall y P(y) }{$(\wedge I), 4, \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 66}] $\forall x P(x) \wedge \forall x Q(x) \leftrightarrow \forall x (P(x) \wedge Q(x))$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\forall x P(x) \wedge \forall x Q(x) $          & $\qquad$ & \\
+\xfl{A1 \Rightarrow \forall x P(x) \wedge \forall x Q(x)}       {axiom}
+\xfl{A1 \Rightarrow \forall x P(x) }                            {$(\wedge E), \xfp{c}$}
+\xfl{A1 \Rightarrow P(x) }                                      {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x Q(x) }                            {$(\wedge E), 1$}
+\xfl{A1 \Rightarrow Q(x) }                                      {$(\forall E), \xfp{c}$}
+\xfl{A1 \Rightarrow P(x) \wedge Q(x) }                          {$(\wedge I), 3, \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x (P(x) \wedge Q(x)) }              {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \forall x P(x) \wedge \forall x Q(x) \rightarrow \forall x (P(x) \wedge Q(x))}
+                                                                {$(\rightarrow I), \xfp{c}$}
+
+\\
+A2. & $\forall x (P(x) \wedge Q(x)) $                           & $\qquad$ & \\
+\xfl{A2 \Rightarrow \forall x (P(x) \wedge Q(x))}               {$(\forall I), \xfp{c}$}
+\xfl{A2 \Rightarrow P(x) \wedge Q(x))}                          {$(\forall E), \xfp{c}$}
+\xfl{A2 \Rightarrow P(x) }                                      {$(\wedge E), \xfp{c}$}
+\xfl{A2 \Rightarrow \forall x P(x) }                            {$(\forall I), \xfp{c}$}
+\xfl{A2 \Rightarrow Q(x) }                                      {$(\wedge E), 9$}
+\xfl{A2 \Rightarrow \forall x Q(x) }                            {$(\forall I), \xfp{c}$}
+\xfl{A2 \Rightarrow \forall x P(x) \wedge \forall x Q(x) }      {$(\wedge I), 11, \xfp{c}$}
+\xfl{\Rightarrow \forall x (P(x) \wedge Q(x)) \rightarrow \forall x P(x) \wedge \forall x Q(x)}
+                                                                {$(\rightarrow I), \xfp{c}$}
+
+\\
+\xfl{\Rightarrow \forall x P(x) \wedge \forall x Q(x) \leftrightarrow \forall x (P(x) \wedge Q(x)) }
+                                                                {$(\wedge I), 4, \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\vspace{-5mm}
+\setcounter{c}{0}
+\item[\textbf{Problem 66\nicefrac{1}{2}}] $\forall x P(x) \vee \forall x Q(x) \leftrightarrow \forall x (P(x) \vee Q(x))$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\forall x P(x) \vee \forall x Q(x) $                      & $\qquad$ & \\
+\xfl{A1 \Rightarrow \forall x P(x) \vee \forall x Q(x)}          {axiom}
+A2. & $\forall x P(x)$                                           & $\qquad$ & \\
+\xfl{A2 \Rightarrow \forall x P(x)}                              {axiom}
+\xfl{A2 \Rightarrow P(x) }                                      {$(\forall E), \xfp{c}$}
+\xfl{A2\Rightarrow P(x) \vee Q(x) }                             {$(\vee I), \xfp{c}$}
+A3. & $\forall x Q(x)$                                           & $\qquad$ & \\
+\xfl{A3 \Rightarrow \forall x Q(x)}                              {axiom}
+\xfl{A3 \Rightarrow Q(x) }                                      {$(\forall E), \xfp{c}$}
+\xfl{A3\Rightarrow P(x) \vee Q(x) }                             {$(\vee I), \xfp{c}$}
+\xfl{A1 \Rightarrow P(x) \vee Q(x) }                            {$(\vee E), 1, 4, \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x (P(x) \vee Q(x))}                            {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \forall x P(x) \vee \forall x Q(x) \rightarrow \forall x (P(x) \vee Q(x))}
+                                                                {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+Counter Example for $\leftarrow$: \\
+$|I| = {a, b}, P^I(a) = \mathrm{t}, P^I(b) = \mathrm{f}, Q^I(a) = \mathrm{f}, Q^I(b) = \mathrm{t}$ 
+\begin{eqnarray*}
+((P(x) \vee Q(x))^x_{\eta^*})^I = & (P(\eta^*) \vee Q(\eta^*))^I \\
+                                = & \vee(P^I (\eta^{*I}), Q^I (\eta^{*I})) \\
+                                = & \vee(P^I (\eta), Q^I (\eta)) 
+                                = &    \left\{
+                                        \begin{array}{ccc}      
+                                        &\mathrm{t}, \quad &\text{if }  \eta = a, \\
+                                        &\mathrm{t}, \quad &\text{if }  \eta = b.
+                                        \end{array}\right.    
+\end{eqnarray*}
+However, 
+\begin{eqnarray*}
+(P(x)^x_{\eta^*})^I = & (P(\eta^*))^I \\
+                    = & P^I (\eta^{*I}) \\
+                    = & P^I (\eta) 
+                    = & \left\{
+                    \begin{array}{ccc}      
+                    &\mathrm{t}, \quad &\text{if }  \eta = a, \\
+                    &\mathrm{f}, \quad &\text{if }  \eta = b.
+                    \end{array}\right.                        
+\end{eqnarray*}
+Thus, $\forall x (P(x)^x_{\eta^*})^I = \mathrm{f}$. Similarly, we can get $\forall x (Q(x)^x_{\eta^*})^I = \mathrm{f}$. Thus, 
+\begin{equation*}
+(\forall x P(x) \vee \forall x Q(x))^I = \mathrm{f}
+\end{equation*}
+This means that
+\begin{equation*}
+( \forall x (P(x) \vee Q(x)) \rightarrow (\forall x P(x) \vee \forall x Q(x)))^I = \mathrm{f}
+\end{equation*}
+Thus rule doesn't hold for the above interpretation. 
+
+\newpage
+
+\setcounter{c}{0}
+\item[\textbf{Problem 67}] $\forall x P(x) \vee Q(a) \leftrightarrow \forall x (P(x) \vee Q(a))$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\forall x P(x) \vee Q(a)$                                   & $\qquad$ & \\
+\xfl{A1 \Rightarrow \forall x P(x) \vee Q(a)}                      {axiom}
+A2. & $\forall x P(x) $                                            & $\qquad$ & \\
+\xfl{A2 \Rightarrow \forall x P(x)}                                {axiom}
+\xfl{A2 \Rightarrow P(x)}                                          {$(\forall E), \xfp{c}$}
+\xfl{A2 \Rightarrow P(x) \vee Q(a)}                                {$(\vee I), \xfp{c}$}
+\xfl{A2 \Rightarrow \forall x (P(x) \vee Q(a))}                    {$(\forall I), \xfp{c}$}
+A3. & $Q(a)$                                                       & $\qquad$ & \\
+\xfl{A3 \Rightarrow Q(a)}                                         {axiom}
+\xfl{A3 \Rightarrow P(x) \vee Q(a)}                                {$(\vee I), \xfp{c}$}
+\xfl{A3 \Rightarrow \forall x (P(x) \vee Q(a))}                    {$(\forall I), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x (P(x) \vee Q(a))}                    {$(\vee E), 1, 5, \xfp{c}$}
+\xfl{\Rightarrow \forall x P(x) \vee Q(a) \rightarrow \forall x (P(x) \vee Q(a))}      {$(\rightarrow I), \xfp{c}$}
+\\
+A4. & $\forall x (P(x) \vee Q(a))$                                   & $\qquad$ & \\
+\xfl{A4 \Rightarrow \forall x (P(x) \vee Q(a))}                      {axiom}
+\xfl{A4 \Rightarrow P(x) \vee Q(a)}                                  {$(\forall E), \xfp{c}$}
+\xfl{\Rightarrow Q(a) \vee \neg Q(a)}                                {axiom}
+A5. & $Q(a)$                                                         & $\qquad$ & \\
+\xfl{A5 \Rightarrow Q(a)}                                            {axiom}
+\xfl{A5 \Rightarrow \forall x P(x) \vee Q(a)}                        {axiom}
+A6. & $ \neg Q(a)$                                                   & $\qquad$ & \\
+\xfl{A6 \Rightarrow \neg Q(a)}                                       {axiom}
+\xfl{A5, A6 \Rightarrow \bot}                                        {$(\neg E), \xfp{c}$}
+\xfl{A5, A6 \Rightarrow P(x)}                                        {$(C), \xfp{c}$}
+\xfl{P(x) \Rightarrow P(x)}                                          {axiom}
+\xfl{A4, A6 \Rightarrow P(x)}                                        {$(\vee E), 12, 18, \xfp{c}$}
+\xfl{A4, A6 \Rightarrow \forall x P(x)}                              {$(\forall I), \xfp{c}$}
+\xfl{A4, A6 \Rightarrow \forall x P(x) \vee Q(a)}                    {$(\vee I), \xfp{c}$}
+\xfl{A4 \Rightarrow \forall x P(x) \vee Q(a)}                        {$(\vee E), 13, 15, \xfp{c}$}
+\\
+\xfl{\Rightarrow \forall x (P(x) \vee Q(a)) \rightarrow \forall x P(x) \vee Q(a) }      {$(\rightarrow I), \xfp{c}$}
+
+
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+
+\setcounter{c}{0}
+\item[\textbf{Problem 68}] $(P(a) \vee P(b)) \rightarrow \exists x P(x)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $P(a) \vee P(b) $                                            & $\qquad$ & \\
+\xfl{A1 \Rightarrow P(a) \vee P(b)}                                {axiom}
+A2. & $P(a) $                                                      & $\qquad$ & \\
+\xfl{A2 \Rightarrow P(a)}                                          {axiom}
+\xfl{A2 \Rightarrow \exists x P(x)}                                {$(\exists I), \xfp{c}$}
+A3. & $P(b) $                                                      & $\qquad$ & \\
+\xfl{A3 \Rightarrow P(b)}                                          {axiom}
+\xfl{A3 \Rightarrow \exists x P(x)}                                {$(\exists I), \xfp{c}$}
+\xfl{A1 \Rightarrow \exists x P(x)}                                {$(\vee E), 1, 3, \xfp{c}$}
+\xfl{\Rightarrow (P(a) \vee P(b)) \rightarrow \exists x P(x)}      {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\setcounter{c}{0}
+\item[\textbf{Problem 69}] $(\exists x P(x) \wedge \forall x (P(x) \rightarrow Q(x))) \rightarrow \exists x Q(x)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $(\exists x P(x) \wedge \forall x (P(x) \rightarrow Q(x)))$  & $\qquad$ & \\
+\xfl{A1 \Rightarrow (\exists x P(x) \wedge \forall x (P(x) \rightarrow Q(x)))}     {axiom}
+\xfl{A1 \Rightarrow \exists x P(x)}                                           {$(\wedge E), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x (P(x) \rightarrow Q(x))}                        {$(\wedge E), \xfp{c}$}
+\xfl{A1 \Rightarrow P(x) \rightarrow Q(x)}                                    {$(\forall E), \xfp{c}$}
+\xfl{ P(x) \Rightarrow  P(x)}                                                 {axiom}
+\xfl{A1, P(x) \Rightarrow  Q(x)}                                              {$(\rightarrow E), \xfp{c}, 4$}
+\xfl{A1, P(x) \Rightarrow  \exists Q(x)}                                      {$(\exists I), \xfp{c}$}
+\xfl{A1 \Rightarrow \exists x Q(x)}                                           {$(\exists E), 2, \xfp{c}$}
+\xfl{\Rightarrow (\exists x P(x) \wedge \forall x (P(x) \rightarrow Q(x)))}   {$(\rightarrow I), \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 70}] $\exists x P(x) \leftrightarrow \exists y P(y)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\exists x P(x) $                                       & $\qquad$ & \\
+\xfl{A1 \Rightarrow \exists x P(x) }                          {axiom}
+A2. & $P(x)$                                                  & $\qquad$ & \\
+\xfl{A2 \Rightarrow P(x) }                                    {axiom}
+\xfl{A2 \Rightarrow \exists y P(y) }                          {$(\exists I), \xfp{c}$}
+\xfl{A1 \Rightarrow \exists y P(y) }                          {$(\exists E), 1, \xfp{c}$}
+\xfl{\Rightarrow \exists x P(x) \rightarrow  \exists y P(y) } {$(\rightarrow I), \xfp{c}$}
+\\
+A3. & $\exists y P(y) $                                       & $\qquad$ & \\
+\xfl{A3 \Rightarrow \exists y P(y) }                          {axiom}
+A2. & $P(y)$                                                  & $\qquad$ & \\
+\xfl{A2 \Rightarrow P(y) }                                    {axiom}
+\xfl{A2 \Rightarrow \exists x P(x) }                          {$(\exists I), \xfp{c}$}
+\xfl{A1 \Rightarrow \exists x P(x) }                          {$(\exists E), 1, \xfp{c}$}
+\xfl{\Rightarrow \exists y P(y) \rightarrow  \exists x P(x) } {$(\rightarrow I), \xfp{c}$}
+\\
+\xfl{\Rightarrow \exists x P(x) \leftrightarrow  \exists y P(y) }{$(\wedge I), 4, \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\newpage
+\setcounter{c}{0}
+\item[\textbf{Problem 71}] $\neg \exists x P(x) \leftrightarrow \forall x \neg P(x)$. 
+\begin{table}[H]
+\begin{center}
+\begin{tabular}{llll}
+A1. & $\neg \exists x P(x) $                                  & $\qquad$ & \\
+\xfl{A1 \Rightarrow \neg \exists x P(x) }                     {axiom}
+A2. & $P(x)$                                                  & $\qquad$ & \\
+\xfl{A2 \Rightarrow P(x) }                                    {axiom}
+\xfl{A2 \Rightarrow \exists x P(x) }                          {$(\exists I), \xfp{c}$}
+\xfl{A1, A2 \Rightarrow \bot }                                {$(\neg E), 1, \xfp{c}$}
+\xfl{A1 \Rightarrow \neg P(x) }                               {$(\neg I), \xfp{c}$}
+\xfl{A1 \Rightarrow \forall x \neg P(x) }                     {$(\forall I), \xfp{c}$}
+\xfl{\Rightarrow \neg \exists x P(x) \rightarrow \forall x \neg P(x)} {$(\rightarrow I), \xfp{c}$}
+\\
+A3. & $\forall x \neg P(x) $                                  & $\qquad$ & \\
+\xfl{A3 \Rightarrow \forall x \neg P(x)}                      {axiom}
+\xfl{A3 \Rightarrow \neg P(x)}                                {$(\forall E), \xfp{c}$}
+\xfl{P(x) \Rightarrow P(x) }                                  {axiom}
+\xfl{A3, P(x) \Rightarrow \bot}                               {$(\neg E), \xfp{c}$, 9}
+A4. & $\exists x P(x)$                                        & $\qquad$ & \\
+\xfl{A4 \Rightarrow \exists x P(x)}                           {axiom}
+\xfl{A3, A4 \Rightarrow \bot}                                 {$(\exists E), \xfp{c}, 11$}
+\xfl{A3 \Rightarrow \neg \exists x P(x)}                      {$(\neg I), \xfp{c}$}
+\xfl{\Rightarrow  \forall x \neg P(x) \rightarrow  \neg \exists x P(x)} {$(\rightarrow I), \xfp{c}$}
+\\
+\xfl{\Rightarrow \neg \exists x P(x) \leftrightarrow \forall x \neg P(x) }{$(\wedge I), 4, \xfp{c}$}
+\end{tabular}
+\end{center}
+\end{table}
+
+\item[\textbf{Problem 71\nicefrac{1}{2}}] $\neg \forall x P(x) \leftrightarrow \exists x \neg P(x)$. 
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+
+ 
+ 

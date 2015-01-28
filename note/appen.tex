@@ -1,0 +1,56 @@
+\newpage
+\section*{Inference Rules}
+
+\begin{align*}
+% left-1
+& (\wedge I) \frac{ \Gamma \Rightarrow F \quad \Delta \Rightarrow G}{\Gamma, \Delta \Rightarrow F \wedge G} \qquad
+% right-1  
+& &(\wedge E) \frac{ \Gamma \Rightarrow F \wedge G}{\Gamma \Rightarrow F}
+ \quad  \frac{ \Gamma \Rightarrow F \wedge G}{\Gamma \Rightarrow  G} \\ \\
+% left-2
+&(\vee I) \frac{ \Gamma \Rightarrow F}{ \Gamma \Rightarrow F \vee G} \quad
+\frac{ \Gamma \Rightarrow G}{ \Gamma \Rightarrow F \vee G} \qquad
+% right-2
+& &(\vee E) \frac{ \Gamma \Rightarrow F \vee G \quad \Delta, F \Rightarrow H \quad \Sigma, G \Rightarrow H} {  \Gamma, \Delta, \Sigma \Rightarrow H} \\ \\
+% left-3
+& (\rightarrow I) \frac{\Gamma, F \Rightarrow G}{\Gamma \Rightarrow F \rightarrow G} \qquad
+% right-3
+& &(\rightarrow E) \frac{\Gamma \Rightarrow F \quad \Delta \Rightarrow F \rightarrow G}{\Gamma, \Delta \Rightarrow G}  \\ \\
+% left-4
+& (\neg I) \frac{\Gamma, F \Rightarrow \bot}{\Gamma \Rightarrow \neg F} \qquad
+% right-4
+& &(\neg E) \frac{\Gamma \Rightarrow F \quad \Delta \Rightarrow \neg F}{\Gamma, \Delta \Rightarrow \bot}   \\ \\
+% left-5
+&(C)~~\frac{\Gamma \Rightarrow \bot}{\Gamma \Rightarrow F} \qquad
+% right-5
+& & (W)~~ \frac{\Gamma \Rightarrow H}{\Gamma, \Delta \Rightarrow H}
+\end{align*}
+
+\vspace{1cm}
+
+\begin{center}
+\begin{minipage}[t]{0.3\textwidth}
+\begin{equation*}
+(\forall I) \quad \frac{ \Gamma \Rightarrow F}{\Gamma \Rightarrow \forall v F }
+\end{equation*} \\
+where $v$ is not a free variable of any formula in $\Gamma$. \\
+\begin{equation*}
+(\exists I) \quad \frac{ \Gamma \Rightarrow F_t^v}{\Gamma \Rightarrow \exists v F}
+\end{equation*}\\
+where $t$ is substitutable for $v$ in $F$
+\end{minipage}
+\begin{minipage}[t]{0.1\textwidth}
+$\quad$
+\end{minipage}
+\begin{minipage}[t]{0.3\textwidth}
+\begin{equation*}
+(\forall E) \quad \frac{ \Gamma \Rightarrow \forall vF }{\Gamma \Rightarrow F_t^v}
+\end{equation*} \\
+where $t$ is substitutable for $v$ in $F$ \\
+\begin{equation*}
+(\exists E) \quad \frac{ \Gamma \Rightarrow \exists vF \quad \Delta, F \Rightarrow \Sigma }
+{\Gamma , \Delta \Rightarrow \Sigma}
+\end{equation*} \\
+where $v$ is not a free variable of any formula in $\Delta, \Sigma$
+\end{minipage}
+\end{center}

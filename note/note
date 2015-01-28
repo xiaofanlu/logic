@@ -1,0 +1,98 @@
+The alphabet of predicate logic consists of:
+\begin{itemize}
+ \item symbols called \textit{object constants}, 
+ \item symbols called \textit{predicate constants}, with a positive integer, called the \textit{arity}, assigned to each of them. 
+ \item \textit{object variable} $x, y, z, x_1, y_1, z_1, x_2, y_2, z_2, \ldots$, \item the propositional connectives,
+ \item the \textit{universal quantifier} $\forall$ and the existential quantifier $\exists$, t
+
+
+
+
+
+
+
+Problem 57 Determine which of the sentences
+\begin{enumerate}[(i)]
+\item $\exist x Sum(x, x, x)$,  
+\item $\exist x \neg Sum(x, x, x)$, 
+\item $\forall x (Sum(x,x,x) \rightarrow \forall y Sum(x, y, y))$
+\end{enumerate}
+are satisfied by interpretation (1). 
+
+Logical Validity and Entailment
+
+In predicate logic, we say about a sentence that it is \textit{logically valid} if it is satisfied by all interpretations. 
+
+Problem 58 Determine whether the sentences
+\begin{eqnarray*}
+   \exists x (P(x) \wedge Q(x)) \rightarrow (\exists x P(x) \wedge \exists x Q(x)), \\
+   (\exists x P(x) \wedge \exists x Q(x)) \rightarrow \exists x (P(x) \wedge Q(x))
+\end{eqnarray*}
+are logically valid. 
+
+The \textit{univeral closure} of a formula $F$ is the sentence $\forall v_1, \cdots, v_n F$, where $v_1, \cdots, v_n$ are all free variables of $F$. About a formula with free variables we say that it is \textit{logically valid} if its universal closure is logically valid. 
+
+Problem 59 For each of the formulas 
+\begin{eqnarray*}
+     P(x) \rightarrow \exists x P(x), 
+     P(x) \rightarrow \forall x P(x), 
+\end{eqnarray*}
+determine whether it is logically valid. 
+
+A formula $F$ is \textit{equivalent} to a formula $G$ if the formula $F \leftrightarrow G$ is logically valid. 
+
+Problem 60 Determine whether the formula 
+\begin{equation*}
+      \forall x \exists y P(x, y)
+\end{equation*}
+is equivalent to 
+\begin{equation*}
+      \exists y \forall x P(x, y)
+\end{equation*}
+
+We say that a set $\Gamma$ of sentences \textit{entails} a sentence $F$, or that $F$ is \textit{logical consequence} of $\Gamma$, if every interpretation that satisfies all sentences in $\Gamma$ satisfies $F$. 
+
+Problem 61 Determine whether 
+\begin{equation*}
+      \exists x P(x, x) 
+\end{equation*}
+is a logical consequence of the sentence 
+\begin{equation*}
+       \forall x \exists y P(x, y), \forall xyz((P(x, y) \wedge P(y,z)) \rightarrow P(x, z)). 
+\end{equation*}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
